@@ -35,11 +35,7 @@ nav.liberty-navbar.navbar
           b-dropdown-item(has-link)
             router-link(:to="`/article/${encodeURIComponent('TeX 문법')}`") TeX 문법
       .user-items
-        router-link.navbar-item(
-          v-if="!user.isLoggedIn",
-          to="/login",
-          active-class=""
-        )
+        a.navbar-item(v-if="!user.isLoggedIn", @click="login")
           b-icon(pack="fa", icon="sign-in")
         template(v-else)
           b-dropdown
@@ -78,6 +74,7 @@ nav.liberty-navbar.navbar
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Gravatar from "vue-gravatar";
+import { startLoginProcess, logout, refreshToken } from "@/auth";
 
 @Component({
   components: {
@@ -91,15 +88,19 @@ export default class NavBar extends Vue {
       wikiname: "리브레 위키",
     },
   };
-  user = {
-    isLoggedIn: true,
-    isAdmin: true,
-    email: "test@test.com",
-    username: "TESTUSER",
-  };
 
-  logout(): void {
-    // pass
+  get user() {
+    return this.$store.state.user;
+  }
+
+  async login(): Promise<void> {
+    startLoginProcess(this.$route.fullPath);
+  }
+
+  async logout(): Promise<void> {
+    await refreshToken();
+    // await logout();
+    // location.reload();
   }
 
   go(): void {

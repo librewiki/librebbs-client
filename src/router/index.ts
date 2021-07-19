@@ -1,10 +1,17 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import TopicList from "../views/TopicList.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  {
+    path: "/auth",
+    name: "Auth",
+    component: () =>
+      import(/* webpackChunkName: "auth" */ "../views/Auth.vue"),
+  },
   {
     path: "/:boardName",
     name: "TopicList",
@@ -16,21 +23,19 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "topic" */ "../views/Topic.vue"),
   },
-  // {
-  //   path: "/about",
-  //   name: "About",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  // },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (!store.state.user.isInitialized && to.name !== "Auth") {
+    store.dispatch("fetchUserInfo");
+  }
+  next();
 });
 
 export default router;
