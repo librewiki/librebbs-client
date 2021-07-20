@@ -75,6 +75,7 @@ nav.liberty-navbar.navbar
 import { Component, Vue } from "vue-property-decorator";
 import Gravatar from "vue-gravatar";
 import { startLoginProcess, logout } from "@/auth";
+import store from "@/store";
 
 @Component({
   components: {
@@ -89,8 +90,8 @@ export default class NavBar extends Vue {
     },
   };
 
-  get user() {
-    return this.$store.state.user;
+  get user(): typeof store.state.user {
+    return store.state.user;
   }
 
   async login(): Promise<void> {

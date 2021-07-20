@@ -1,6 +1,6 @@
 import { getUserInfo } from "@/api";
 import Vue from "vue";
-import Vuex, { StoreOptions, Store } from "vuex";
+import Vuex, { StoreOptions } from "vuex";
 
 Vue.use(Vuex);
 
@@ -8,13 +8,13 @@ interface State {
   meta: {
     title: string;
     error: string | null;
-  },
+  };
   user: {
-    isInitialized: boolean,
-    isLoggedIn: boolean,
-    isAdmin: boolean,
-    email: string,
-    username: string,
+    isInitialized: boolean;
+    isLoggedIn: boolean;
+    isAdmin: boolean;
+    email: string;
+    username: string;
   };
 }
 
@@ -30,7 +30,7 @@ const storeOptions: StoreOptions<State> = {
       isAdmin: false,
       email: "",
       username: "",
-    }
+    },
   },
   mutations: {
     setTitle(state, title: string) {
@@ -39,7 +39,7 @@ const storeOptions: StoreOptions<State> = {
     setError(state, error: string) {
       state.meta.error = error;
     },
-    updateUserInfo(state, newState: State['user']) {
+    updateUserInfo(state, newState: State["user"]) {
       state.user = newState;
     },
     resetUserInfo(state) {
@@ -50,7 +50,7 @@ const storeOptions: StoreOptions<State> = {
         email: "",
         username: "",
       };
-    }
+    },
   },
   actions: {
     async fetchUserInfo() {
@@ -66,7 +66,7 @@ const storeOptions: StoreOptions<State> = {
       } catch {
         store.commit("resetUserInfo");
       }
-    }
+    },
   },
   modules: {},
 };

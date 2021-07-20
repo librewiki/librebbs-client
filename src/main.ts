@@ -6,9 +6,9 @@ import router from "./router";
 import store from "./store";
 import "./buefy";
 Vue.config.productionTip = false;
-import moment from 'moment';
+import moment from "moment";
 
-moment.locale('ko');
+moment.locale("ko");
 Vue.prototype.$moment = moment;
 
 new Vue({

@@ -9,8 +9,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/auth",
     name: "Auth",
-    component: () =>
-      import(/* webpackChunkName: "auth" */ "../views/Auth.vue"),
+    component: () => import(/* webpackChunkName: "auth" */ "../views/Auth.vue"),
   },
   {
     path: "/:boardName",

@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import store from "@/store";
 import NavBar from "@/components/NavBar.vue";
 import LiveRecent from "@/components/LiveRecent.vue";
 // import ToolBox from "@/components/ToolBox";
@@ -39,15 +40,12 @@ import LiveRecent from "@/components/LiveRecent.vue";
   },
 })
 export default class App extends Vue {
-  get title() {
-    return this.$store.state.meta.title;
+  get title(): string {
+    return store.state.meta.title;
   }
-  get error() {
-    return this.$store.state.meta.error;
+  get error(): string | null {
+    return store.state.meta.error;
   }
-  // computed: {
-  //   ...mapState(["meta", "settings"]),
-  // },
 }
 </script>
 

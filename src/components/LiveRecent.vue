@@ -40,40 +40,58 @@ const documentNamespaces = "0|4|10|12|14|1600";
 const topicNamespaces = "1|3|5|7|9|11|13|15|2600|1601|1063|3604|3605";
 const limit = 10;
 
-type RecentChangeItem = {
+interface RecentChangeResponse {
+  query: {
+    recentchanges: RecentChangeResponseItem[];
+  };
+}
+
+interface RecentChangeResponseItem {
   timestamp: string;
   type: string;
   title: string;
-};
+}
+
+interface RecentChangeItem {
+  key: string;
+  timeString: string;
+  isNew: boolean;
+  text: string;
+  to: string;
+}
 
 @Component
 export default class LiveRecent extends Vue {
   error = false;
   pending = false;
-  items = [];
+  items: RecentChangeItem[] = [];
   mode = "DOCUMENT";
-  async fetchLiveRecent() {
+
+  async fetchLiveRecent(): Promise<void> {
     if (window.innerWidth < 769) return;
     if (this.pending) return;
     this.pending = true;
     try {
-      const resp = await axios.get("https://librewiki.net/api.php", {
-        params: {
-          action: "query",
-          origin: window.origin,
-          list: "recentchanges",
-          rcprop: "title|timestamp",
-          rcshow: "!bot|!redirect",
-          rctype: "edit|new",
-          rclimit: limit,
-          format: "json",
-          rcnamespace:
-            this.mode === "DOCUMENT" ? documentNamespaces : topicNamespaces,
-          rctoponly: true,
-        },
-      });
-      this.items = resp.data.query.recentchanges.map(
-        (item: RecentChangeItem) => {
+      const { data } = await axios.get<RecentChangeResponse>(
+        "https://librewiki.net/api.php",
+        {
+          params: {
+            action: "query",
+            origin: window.origin,
+            list: "recentchanges",
+            rcprop: "title|timestamp",
+            rcshow: "!bot|!redirect",
+            rctype: "edit|new",
+            rclimit: limit,
+            format: "json",
+            rcnamespace:
+              this.mode === "DOCUMENT" ? documentNamespaces : topicNamespaces,
+            rctoponly: true,
+          },
+        }
+      );
+      this.items = data.query.recentchanges.map(
+        (item: RecentChangeResponseItem) => {
           let timeString;
           const updateTime = moment(item.timestamp);
           if (updateTime < moment().subtract(1, "day")) {
@@ -98,7 +116,7 @@ export default class LiveRecent extends Vue {
       this.pending = false;
     }
   }
-  mounted() {
+  mounted(): void {
     this.fetchLiveRecent();
     setInterval(this.fetchLiveRecent, 30 * 1000);
   }

@@ -20,11 +20,11 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { getBoards, getComments, getTopic } from "@/api";
 import type { Topic, Comment } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
-
-import { Component, Vue, Watch } from "vue-property-decorator";
+import store from "@/store";
 
 @Component({
   components: {
@@ -46,17 +46,18 @@ export default class TopicList extends Vue {
   };
   comments: Comment[] = [];
   busy = false;
+
   @Watch("$route.params", { immediate: true })
-  async fetchData() {
+  async fetchData(): Promise<void> {
     this.busy = true;
     try {
       const boardName = this.$route.params.boardName;
       const boards = await getBoards();
       const board = boards.find((x) => x.name === boardName);
       if (board) {
-        this.$store.commit("setTitle", board.display_name);
+        store.commit("setTitle", board.display_name);
       } else {
-        this.$store.commit("setError", "존재하지 않는 게시판입니다.");
+        store.commit("setError", "존재하지 않는 게시판입니다.");
         return;
       }
       const topicId = parseInt(this.$route.params.topicId);
@@ -67,8 +68,7 @@ export default class TopicList extends Vue {
       this.topic = topic;
       this.comments = comments;
     } catch (err) {
-      this.$store.commit("setError", "에러가 발생했습니다.");
-      // this.$router.push("/");
+      store.commit("setError", "에러가 발생했습니다.");
     } finally {
       this.busy = false;
     }

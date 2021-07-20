@@ -1,7 +1,5 @@
 import axios from "axios";
-import type {
-  LockManager,
-} from "navigator.locks";
+import type { LockManager } from "navigator.locks";
 import { refreshToken } from "@/auth";
 
 declare global {
@@ -12,13 +10,12 @@ declare global {
 
 const client = axios.create({
   baseURL: process.env.VUE_APP_BACKEND_HOST,
-  withCredentials: true
+  withCredentials: true,
 });
 
-
 client.interceptors.response.use(
-  async response => response,
-  async error => {
+  async (response) => response,
+  async (error) => {
     const {
       config,
       response: { status },
@@ -40,9 +37,9 @@ interface UserInfo {
   groups: string[];
   rights: string[];
   username: string;
-};
+}
 
-async function getUserInfo() {
+async function getUserInfo(): Promise<UserInfo> {
   const { data } = await client.get<UserInfo>("/me");
   return data;
 }
@@ -54,9 +51,9 @@ interface Board {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-};
+}
 
-async function getBoards() {
+async function getBoards(): Promise<Board[]> {
   const { data } = await client.get<Board[]>(`/boards`);
   return data;
 }
@@ -72,14 +69,14 @@ interface Topic {
   author_name: string;
   created_at: string;
   updated_at: string;
-};
+}
 
-async function getTopics(boardId: number) {
+async function getTopics(boardId: number): Promise<Topic[]> {
   const { data } = await client.get<Topic[]>(`/boards/${boardId}/topics`);
   return data;
 }
 
-async function getTopic(topicId: number) {
+async function getTopic(topicId: number): Promise<Topic> {
   const { data } = await client.get<Topic>(`/topics/${topicId}`);
   return data;
 }
@@ -93,9 +90,9 @@ interface Comment {
   is_hidden: boolean;
   created_at: string;
   updated_at: string;
-};
+}
 
-async function getComments(topicId: number) {
+async function getComments(topicId: number): Promise<Comment[]> {
   const { data } = await client.get<Comment[]>(`/topics/${topicId}/comments`);
   return data;
 }
