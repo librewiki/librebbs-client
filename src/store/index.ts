@@ -1,10 +1,20 @@
 import { getUserInfo } from "@/api";
 import Vue from "vue";
-import Vuex from "vuex";
+import Vuex, { StoreOptions, Store } from "vuex";
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+interface State {
+  user: {
+    isInitialized: boolean,
+    isLoggedIn: boolean,
+    isAdmin: boolean,
+    email: string,
+    username: string,
+  };
+}
+
+const storeOptions: StoreOptions<State> = {
   state: {
     user: {
       isInitialized: false,
@@ -19,7 +29,6 @@ const store = new Vuex.Store({
       state.user = newState;
     },
     resetUserInfo(state) {
-      localStorage.removeItem("access_token");
       state.user = {
         isInitialized: true,
         isLoggedIn: false,
@@ -46,6 +55,8 @@ const store = new Vuex.Store({
     }
   },
   modules: {},
-});
+};
+
+const store = new Vuex.Store(storeOptions);
 
 export default store;

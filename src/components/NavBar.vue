@@ -34,7 +34,7 @@ nav.liberty-navbar.navbar
             router-link(:to="`/article/${encodeURIComponent('문법 도움말')}`") 문법 도움말
           b-dropdown-item(has-link)
             router-link(:to="`/article/${encodeURIComponent('TeX 문법')}`") TeX 문법
-      .user-items
+      .user-items(v-if="user.isInitialized")
         a.navbar-item(v-if="!user.isLoggedIn", @click="login")
           b-icon(pack="fa", icon="sign-in")
         template(v-else)
@@ -74,7 +74,7 @@ nav.liberty-navbar.navbar
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Gravatar from "vue-gravatar";
-import { startLoginProcess, logout, refreshToken } from "@/auth";
+import { startLoginProcess, logout } from "@/auth";
 
 @Component({
   components: {
@@ -98,9 +98,8 @@ export default class NavBar extends Vue {
   }
 
   async logout(): Promise<void> {
-    await refreshToken();
-    // await logout();
-    // location.reload();
+    await logout();
+    location.reload();
   }
 
   go(): void {

@@ -32,9 +32,52 @@ client.interceptors.response.use(
   }
 );
 
+interface UserInfo {
+  id: number;
+  blocked: boolean;
+  confirmed_email: boolean;
+  email: string;
+  groups: string[];
+  rights: string[];
+  username: string;
+};
+
 async function getUserInfo() {
-  const { data: { data: { attributes } } } = await client.get("/me");
-  return attributes;
+  const { data } = await client.get<UserInfo>("/me");
+  return data;
 }
 
-export { getUserInfo };
+interface Board {
+  id: number;
+  display_name: string;
+  name: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+async function getBoards() {
+  const { data } = await client.get<Board[]>(`/boards`);
+  return data;
+}
+
+interface Topic {
+  id: number;
+  title: string;
+  board_id: number;
+  is_closed: boolean;
+  is_suspended: boolean;
+  is_hidden: boolean;
+  author_id: number;
+  author_name: string;
+  created_at: string;
+  updated_at: string;
+};
+
+async function getTopics(boardId: number) {
+  const { data } = await client.get<Topic[]>(`/boards/${boardId}/topics`);
+  return data;
+}
+
+export { getUserInfo, getBoards, getTopics };
+export type { UserInfo, Board, Topic };
