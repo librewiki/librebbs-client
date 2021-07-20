@@ -1,4 +1,4 @@
-# libre-bbs2-client
+# librebbs-client
 
 ## Project setup
 ```
