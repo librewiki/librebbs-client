@@ -63,12 +63,12 @@ async function getBoards() {
 
 interface Topic {
   id: number;
-  title: string;
   board_id: number;
+  title: string;
   is_closed: boolean;
   is_suspended: boolean;
   is_hidden: boolean;
-  author_id: number;
+  author_id: null | number;
   author_name: string;
   created_at: string;
   updated_at: string;
@@ -79,5 +79,26 @@ async function getTopics(boardId: number) {
   return data;
 }
 
-export { getUserInfo, getBoards, getTopics };
-export type { UserInfo, Board, Topic };
+async function getTopic(topicId: number) {
+  const { data } = await client.get<Topic>(`/topics/${topicId}`);
+  return data;
+}
+
+interface Comment {
+  id: number;
+  topic_id: number;
+  content: string;
+  author_id: null | number;
+  author_name: string;
+  is_hidden: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+async function getComments(topicId: number) {
+  const { data } = await client.get<Comment[]>(`/topics/${topicId}/comments`);
+  return data;
+}
+
+export { getUserInfo, getBoards, getTopics, getTopic, getComments };
+export type { UserInfo, Board, Topic, Comment };

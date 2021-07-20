@@ -1,11 +1,11 @@
 <template lang="pug">
 .page-topic
-  .topic
+  .topic.box
     h3.title.topic-title {{ topic.title }}
-  topic-content-card.topic-content-card(
-    v-for="content in topic.contents",
-    :key="content.id",
-    :content="content"
+  topic-comment-card.topic-content-card(
+    v-for="comment in comments",
+    :key="comment.id",
+    :comment="comment"
   )
   hr
   //- .add-topic-form
@@ -20,50 +20,64 @@
 </template>
 
 <script lang="ts">
-import TopicContentCard from "@/components/TopicContentCard.vue";
+import { getBoards, getComments, getTopic } from "@/api";
+import type { Topic, Comment } from "@/api";
+import TopicCommentCard from "@/components/TopicCommentCard.vue";
 
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   components: {
-    TopicContentCard,
+    TopicCommentCard,
   },
 })
 export default class TopicList extends Vue {
-  topic = {
-    title: "topic 1",
-    contents: [
-      {
-        authorName: "Author1",
-        text: "Text1",
-      },
-      {
-        authorName: "Author1",
-        text: "Text1",
-      },
-      {
-        authorName: "Author1",
-        text: "Text1",
-      },
-      {
-        authorName: "Author1",
-        text: "Text1",
-      },
-      {
-        authorName: "Author1",
-        text: "Text1",
-      },
-    ],
+  topic: Topic = {
+    id: 0,
+    board_id: 0,
+    title: "",
+    is_closed: false,
+    is_suspended: false,
+    is_hidden: false,
+    author_id: 0,
+    author_name: "",
+    created_at: "",
+    updated_at: "",
   };
+  comments: Comment[] = [];
   busy = false;
+  @Watch("$route.params", { immediate: true })
+  async fetchData() {
+    this.busy = true;
+    try {
+      const boardName = this.$route.params.boardName;
+      const boards = await getBoards();
+      const board = boards.find((x) => x.name === boardName);
+      if (board) {
+        this.$store.commit("setTitle", board.display_name);
+      } else {
+        this.$store.commit("setError", "존재하지 않는 게시판입니다.");
+        return;
+      }
+      const topicId = parseInt(this.$route.params.topicId);
+      const [topic, comments] = await Promise.all([
+        getTopic(topicId),
+        getComments(topicId),
+      ]);
+      this.topic = topic;
+      this.comments = comments;
+    } catch (err) {
+      this.$store.commit("setError", "에러가 발생했습니다.");
+      // this.$router.push("/");
+    } finally {
+      this.busy = false;
+    }
+  }
 }
 </script>
 
 <style lang="scss">
 .page-topic {
-  .topic-title {
-    margin-bottom: 1rem;
-  }
   .topic-content-card {
     margin-bottom: 1rem;
   }

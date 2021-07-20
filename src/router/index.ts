@@ -18,7 +18,7 @@ const routes: Array<RouteConfig> = [
     component: TopicList,
   },
   {
-    path: "/:boardName/:topicSrl",
+    path: "/:boardName/:topicId",
     name: "Topic",
     component: () =>
       import(/* webpackChunkName: "topic" */ "../views/Topic.vue"),
@@ -32,6 +32,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  store.commit("setError", null);
   if (!store.state.user.isInitialized && to.name !== "Auth") {
     store.dispatch("fetchUserInfo");
   }

@@ -5,6 +5,10 @@ import Vuex, { StoreOptions, Store } from "vuex";
 Vue.use(Vuex);
 
 interface State {
+  meta: {
+    title: string;
+    error: string | null;
+  },
   user: {
     isInitialized: boolean,
     isLoggedIn: boolean,
@@ -16,6 +20,10 @@ interface State {
 
 const storeOptions: StoreOptions<State> = {
   state: {
+    meta: {
+      title: "",
+      error: null,
+    },
     user: {
       isInitialized: false,
       isLoggedIn: false,
@@ -25,7 +33,13 @@ const storeOptions: StoreOptions<State> = {
     }
   },
   mutations: {
-    updateUserInfo(state, newState) {
+    setTitle(state, title: string) {
+      state.meta.title = title;
+    },
+    setError(state, error: string) {
+      state.meta.error = error;
+    },
+    updateUserInfo(state, newState: State['user']) {
       state.user = newState;
     },
     resetUserInfo(state) {

@@ -11,12 +11,12 @@
             .level.title-wrapper-row
               .level-left
                 .level-item
-                  h1.title 위키방
-                  //- h1.title {{ meta.title }}
+                  h1.title {{ title }}
               //- .level-right(v-if="meta.toolBox")
               //-   .level-item
               //-     tool-box
           section.main-content
+            p(v-if="error") {{ error }}
             router-view
           //- liberty-footer.footer.main-footer
       .column.is-narrow.is-hidden-touch
@@ -39,6 +39,12 @@ import LiveRecent from "@/components/LiveRecent.vue";
   },
 })
 export default class App extends Vue {
+  get title() {
+    return this.$store.state.meta.title;
+  }
+  get error() {
+    return this.$store.state.meta.error;
+  }
   // computed: {
   //   ...mapState(["meta", "settings"]),
   // },
