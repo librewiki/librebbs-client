@@ -4,15 +4,22 @@
     li(v-for="topic in topics")
       h2
         router-link(:to="`/${board.name}/${topic.id}`") {{ topic.title }}
+  hr
+  new-topic(:board-id="board.id")
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { getBoards, getTopics } from "@/api";
 import type { Topic, Board } from "@/api";
+import NewTopic from "@/components/NewTopic.vue";
 import store from "@/store";
 
-@Component
+@Component({
+  components: {
+    NewTopic,
+  },
+})
 export default class TopicList extends Vue {
   board: Board = {
     id: 0,

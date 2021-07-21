@@ -81,6 +81,19 @@ async function getTopic(topicId: number): Promise<Topic> {
   return data;
 }
 
+async function postTopic(
+  boardId: number,
+  title: string,
+  content: string
+): Promise<void> {
+  console.log(boardId, title, content);
+  await client.post("/topics", {
+    board_id: boardId,
+    title,
+    content,
+  });
+}
+
 interface Comment {
   id: number;
   topic_id: number;
@@ -97,5 +110,5 @@ async function getComments(topicId: number): Promise<Comment[]> {
   return data;
 }
 
-export { getUserInfo, getBoards, getTopics, getTopic, getComments };
+export { getUserInfo, getBoards, getTopics, getTopic, getComments, postTopic };
 export type { UserInfo, Board, Topic, Comment };

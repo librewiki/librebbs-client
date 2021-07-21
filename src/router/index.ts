@@ -1,11 +1,14 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import TopicList from "../views/TopicList.vue";
 import store from "@/store";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  {
+    path: "/",
+    redirect: "/wiki",
+  },
   {
     path: "/auth",
     name: "Auth",
@@ -14,7 +17,8 @@ const routes: Array<RouteConfig> = [
   {
     path: "/:boardName",
     name: "TopicList",
-    component: TopicList,
+    component: () =>
+      import(/* webpackChunkName: "topic_list" */ "../views/TopicList.vue"),
   },
   {
     path: "/:boardName/:topicId",
