@@ -1,4 +1,5 @@
 import { getUserInfo } from "@/api";
+import { logout } from "@/auth";
 import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
 
