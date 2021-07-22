@@ -129,6 +129,21 @@ async function postComment(
   return data;
 }
 
+interface FileResponse {
+  path: string;
+}
+
+async function postFile(
+  filename: string,
+  content: string
+): Promise<FileResponse> {
+  const { data } = await client.post<FileResponse>("/files", {
+    filename,
+    content,
+  });
+  return data;
+}
+
 export {
   getUserInfo,
   getBoards,
@@ -137,5 +152,6 @@ export {
   getComments,
   postTopic,
   postComment,
+  postFile,
 };
 export type { UserInfo, Board, Topic, Comment };
