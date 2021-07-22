@@ -8,15 +8,7 @@
     :comment="comment"
   )
   hr
-  //- .add-topic-form
-  //-   h3.title 새 댓글
-  //-   b-field
-  //-     b-input(
-  //-       type="textarea",
-  //-       v-model="model.wikitext"
-  //-     )
-  //-   .right-wrapper
-  //-     button.button.is-primary(@click="submit") 작성
+  new-comment(:topic-id="topic.id")
 </template>
 
 <script lang="ts">
@@ -24,11 +16,13 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { getBoards, getComments, getTopic } from "@/api";
 import type { Topic, Comment } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
+import NewComment from "@/components/NewComment.vue";
 import store from "@/store";
 
 @Component({
   components: {
     TopicCommentCard,
+    NewComment,
   },
 })
 export default class TopicList extends Vue {

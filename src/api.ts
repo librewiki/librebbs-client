@@ -110,5 +110,23 @@ async function getComments(topicId: number): Promise<Comment[]> {
   return data;
 }
 
-export { getUserInfo, getBoards, getTopics, getTopic, getComments, postTopic };
+async function postComment(
+  topicId: number,
+  content: string
+): Promise<Comment[]> {
+  const { data } = await client.post(`/topics/${topicId}/comments`, {
+    content,
+  });
+  return data;
+}
+
+export {
+  getUserInfo,
+  getBoards,
+  getTopics,
+  getTopic,
+  getComments,
+  postTopic,
+  postComment,
+};
 export type { UserInfo, Board, Topic, Comment };
