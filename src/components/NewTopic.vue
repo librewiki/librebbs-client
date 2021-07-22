@@ -45,8 +45,7 @@ export default class NewTopic extends Vue {
       "addImageBlobHook",
       (
         fileOrBlob: File | Blob,
-        callback: (url: string, text?: string) => void,
-        source: string
+        callback: (url: string, text?: string) => void
       ): void => {
         callback("https://todo");
       }
