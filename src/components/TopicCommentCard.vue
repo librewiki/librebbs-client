@@ -5,14 +5,20 @@
       .topic-comment-author {{ comment.author_name }}
       .topic-comment-date {{ $moment(comment.created_at).format('LLLL') }}
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
-    div {{ comment.content }}
+    viewer(:initialValue="comment.content")
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import type { Comment } from "@/api";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import { Viewer } from "@toast-ui/vue-editor";
 
-@Component
+@Component({
+  components: {
+    Viewer,
+  },
+})
 export default class TopicContentCard extends Vue {
   @Prop() comment!: Comment;
 }

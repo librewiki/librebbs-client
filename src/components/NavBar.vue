@@ -105,48 +105,20 @@ export default class NavBar extends Vue {
 
   go(): void {
     if (this.searchInput) {
-      this.$router.push(`/go/${encodeURIComponent(this.searchInput)}`);
-      this.searchInput = "";
+      location.href = `https://librewiki.net/index.php?title=special:search&search=${encodeURIComponent(
+        this.searchInput
+      )}`;
     }
   }
 
   search(): void {
     if (this.searchInput) {
-      this.$router.push(`/search/${encodeURIComponent(this.searchInput)}`);
-      this.searchInput = "";
+      location.href = `https://librewiki.net/index.php?title=special:search&search=${encodeURIComponent(
+        this.searchInput
+      )}&fulltext=search`;
     }
   }
 }
-
-// import { mapState } from "vuex";
-// export default {
-//   data() {
-//     return {
-//       searchInput: "",
-//     };
-//   },
-//   computed: {
-//     ...mapState(["settings", "user"]),
-//   },
-//   methods: {
-//     go() {
-//       if (this.searchInput) {
-//         this.$router.push(`/go/${encodeURIComponent(this.searchInput)}`);
-//         this.searchInput = "";
-//       }
-//     },
-//     search() {
-//       if (this.searchInput) {
-//         this.$router.push(`/search/${encodeURIComponent(this.searchInput)}`);
-//         this.searchInput = "";
-//       }
-//     },
-//     logout() {
-//       //   Cookies.remove("jwt", { path: "/" });
-//       location.reload();
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss">

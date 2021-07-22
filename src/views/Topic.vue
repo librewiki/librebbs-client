@@ -9,6 +9,7 @@
   )
   infinite-loading(@infinite="handleInfinite" :identifier="infiniteId")
     div(slot="no-more")
+    div(slot="no-results")
   hr
   new-comment(:topic-id="topic.id", :refresh="refresh")
 </template>
