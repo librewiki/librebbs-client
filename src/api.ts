@@ -105,8 +105,17 @@ interface Comment {
   updated_at: string;
 }
 
-async function getComments(topicId: number): Promise<Comment[]> {
-  const { data } = await client.get<Comment[]>(`/topics/${topicId}/comments`);
+async function getComments(
+  topicId: number,
+  offset: number,
+  limit: number
+): Promise<Comment[]> {
+  const { data } = await client.get<Comment[]>(`/topics/${topicId}/comments`, {
+    params: {
+      offset,
+      limit,
+    },
+  });
   return data;
 }
 

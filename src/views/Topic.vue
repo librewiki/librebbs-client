@@ -5,14 +5,17 @@
   topic-comment-card.topic-content-card(
     v-for="comment in comments",
     :key="comment.id",
-    :comment="comment"
+    :comment="comment",
   )
+  infinite-loading(@infinite="handleInfinite" :identifier="infiniteId")
+    div(slot="no-more")
   hr
-  new-comment(:topic-id="topic.id")
+  new-comment(:topic-id="topic.id", :refresh="refresh")
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
+import InfiniteLoading, { StateChanger } from "vue-infinite-loading";
 import { getBoards, getComments, getTopic } from "@/api";
 import type { Topic, Comment } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
@@ -23,6 +26,7 @@ import store from "@/store";
   components: {
     TopicCommentCard,
     NewComment,
+    InfiniteLoading,
   },
 })
 export default class TopicList extends Vue {
@@ -40,6 +44,25 @@ export default class TopicList extends Vue {
   };
   comments: Comment[] = [];
   busy = false;
+  infiniteId = +new Date();
+
+  refresh(): void {
+    this.infiniteId += 1;
+  }
+
+  async handleInfinite($state: StateChanger): Promise<void> {
+    const limit = 10;
+    const topicId = parseInt(this.$route.params.topicId);
+    const comments = await getComments(topicId, this.comments.length, limit);
+    if (comments.length) {
+      this.comments.push(...comments);
+    }
+    if (comments.length < limit) {
+      $state.complete();
+    } else {
+      $state.loaded();
+    }
+  }
 
   @Watch("$route.params", { immediate: true })
   async fetchData(): Promise<void> {
@@ -55,12 +78,8 @@ export default class TopicList extends Vue {
         return;
       }
       const topicId = parseInt(this.$route.params.topicId);
-      const [topic, comments] = await Promise.all([
-        getTopic(topicId),
-        getComments(topicId),
-      ]);
+      const topic = await getTopic(topicId);
       this.topic = topic;
-      this.comments = comments;
     } catch (err) {
       store.commit("setError", "에러가 발생했습니다.");
     } finally {

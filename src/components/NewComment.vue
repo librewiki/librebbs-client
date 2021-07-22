@@ -17,12 +17,13 @@ import { postComment } from "@/api";
 @Component
 export default class NewComment extends Vue {
   @Prop() topicId!: number;
+  @Prop() refresh!: () => void;
 
   content = "";
 
   async handleSubmit(): Promise<void> {
     await postComment(this.topicId, this.content);
-    location.reload();
+    this.refresh();
   }
 }
 </script>
