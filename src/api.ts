@@ -97,7 +97,7 @@ async function postTopic(
 interface Comment {
   id: number;
   topic_id: number;
-  content: string;
+  content: null | string;
   author_id: null | number;
   author_name: string;
   is_hidden: boolean;
