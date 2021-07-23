@@ -2,7 +2,8 @@
 .card.topic-comment-card
   header.card-header
     .topic-comment-info
-      .topic-comment-author {{ comment.author_name }}
+      a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.author_name )}`")
+        .topic-comment-author {{ comment.author_name }}
       .topic-comment-date {{ $moment(comment.created_at).format('LLLL') }}
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
     viewer(:initialValue="comment.content")

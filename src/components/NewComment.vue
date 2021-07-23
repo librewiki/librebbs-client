@@ -1,7 +1,7 @@
 <template lang="pug">
 .new-topic
   .field
-    label.label 새 코멘트
+    label.label#label_newtopic 새 의견 추가하기
   .field
     editor(
       :options="editorOptions",
@@ -18,6 +18,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { postFile, postComment } from "@/api";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/vue-editor";
+import '@toast-ui/editor/dist/i18n/ko-kr';
 
 @Component({
   components: {
@@ -32,6 +33,7 @@ export default class NewComment extends Vue {
     usageStatistics: false,
     initialEditType: "wysiwyg",
     hideModeSwitch: true,
+    language: "ko-KR"
   };
   $refs!: {
     toastuiEditor: Editor;
@@ -66,3 +68,14 @@ export default class NewComment extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.new-topic {
+  #label_newtopic {
+    font-size: 1.25rem;
+    padding-left: 0.5rem;
+  }
+}
+
+</style>
+

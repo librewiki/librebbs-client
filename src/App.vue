@@ -11,7 +11,8 @@
             .level.title-wrapper-row
               .level-left
                 .level-item
-                  h1.title {{ title }}
+                  router-link(:to="`/${board.name}`")
+                    h1.title {{ title }}
               //- .level-right(v-if="meta.toolBox")
               //-   .level-item
               //-     tool-box
@@ -24,8 +25,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import store from "@/store";
+import { getBoards } from "@/api";
+import type { Board } from "@/api";
 import NavBar from "@/components/NavBar.vue";
 import LiveRecent from "@/components/LiveRecent.vue";
 // import ToolBox from "@/components/ToolBox";
@@ -45,6 +48,38 @@ export default class App extends Vue {
   }
   get error(): string | null {
     return store.state.meta.error;
+  }
+  board: Board = {
+    id: 0,
+    display_name: "",
+    name: "",
+    is_active: false,
+    created_at: "",
+    updated_at: "",
+  };
+  busy = false;
+
+  @Watch("$route.params", { immediate: true })
+  async fetchData(): Promise<void> {
+    this.busy = true;
+    try {
+      const boardName = this.$route.params.boardName;
+      console.log(boardName);
+      const boards = await getBoards();
+      const board = boards.find((x) => x.name === boardName);
+      console.log(board);
+      if (board) {
+        this.board = board;
+        store.commit("setTitle", board.display_name);
+      } else {
+        store.commit("setError", "존재하지 않는 게시판입니다.");
+        return;
+      }
+    } catch {
+      store.commit("setError", "에러가 발생했습니다.");
+    } finally {
+      this.busy = false;
+    }
   }
 }
 </script>
