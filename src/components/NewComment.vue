@@ -9,6 +9,7 @@
       ref="toastuiEditor"
     )
   .field
+    span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
     .control
       button.button.is-link(@click="handleSubmit") 작성
 </template>
@@ -19,6 +20,7 @@ import { postFile, postComment } from "@/api";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/vue-editor";
 import "@toast-ui/editor/dist/i18n/ko-kr";
+import store from "@/store";
 
 @Component({
   components: {
@@ -28,6 +30,10 @@ import "@toast-ui/editor/dist/i18n/ko-kr";
 export default class NewComment extends Vue {
   @Prop() topicId!: number;
   @Prop() refresh!: () => void;
+
+  get user(): typeof store.state.user {
+    return store.state.user;
+  }
 
   editorOptions = {
     usageStatistics: false,
@@ -70,10 +76,18 @@ export default class NewComment extends Vue {
 </script>
 
 <style lang="scss">
-.new-topic {
+@import "@/assets/style-variables.scss";
+.new-topic 
   #label_newtopic {
     font-size: 1.25rem;
     padding-left: 0.5rem;
   }
-}
+  .control {
+  text-align:right;
+  }
+  .button:hover {
+    background-color:$primary;
+    color:white;
+    transition: 0.25s;
+  }
 </style>
