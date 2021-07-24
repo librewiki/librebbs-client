@@ -4,9 +4,9 @@
     router-link(:to="`/${board.name}/${topic.id}`")
       h3.title.topic-title {{ topic.title }}
   topic-comment-card.topic-content-card(
-    v-for="comment in comments",
+    v-for="(comment,index) in comments",
     :key="comment.id",
-    :comment="comment",
+    :comment.sync="comments[index]"
   )
   infinite-loading(@infinite="handleInfinite" :identifier="infiniteId")
     div(slot="no-more")
@@ -54,6 +54,12 @@ export default class TopicList extends Vue {
 
   refresh(): void {
     this.infiniteId += 1;
+  }
+
+  async refreshComment(comment: Comment): Promise<void> {
+    const index = this.comments.indexOf(comment);
+    const newComment = (await getComments(this.topic.id, index, 1))[0];
+    this.$set(this.comments, index, newComment);
   }
 
   async handleInfinite($state: StateChanger): Promise<void> {

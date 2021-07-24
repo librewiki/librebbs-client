@@ -128,12 +128,38 @@ async function getComments(
   return data;
 }
 
+async function getComment(
+  commentId: number,
+  showHidden: boolean
+): Promise<Comment> {
+  const { data } = await client.get<Comment>(`/comments/${commentId}`, {
+    params: {
+      show_hidden: showHidden,
+    },
+  });
+  return data;
+}
+
 async function postComment(
   topicId: number,
   content: string
 ): Promise<Comment[]> {
   const { data } = await client.post(`/topics/${topicId}/comments`, {
     content,
+  });
+  return data;
+}
+
+async function hideComment(commentId: number): Promise<Comment> {
+  const { data } = await client.put<Comment>(`/comments/${commentId}/status`, {
+    is_hidden: true,
+  });
+  return data;
+}
+
+async function unhideComment(commentId: number): Promise<Comment> {
+  const { data } = await client.put<Comment>(`/comments/${commentId}/status`, {
+    is_hidden: false,
   });
   return data;
 }
@@ -158,9 +184,12 @@ export {
   getBoards,
   getTopics,
   getTopic,
+  getComment,
   getComments,
   postTopic,
   postComment,
   postFile,
+  hideComment,
+  unhideComment,
 };
 export type { UserInfo, Board, Topic, Comment };
