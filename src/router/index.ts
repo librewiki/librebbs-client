@@ -47,7 +47,7 @@ router.beforeEach(async (to, from, next) => {
     await Promise.all(promises);
     next();
   } catch (error) {
-    store.commit("setError", error.message);
+    store.commit("setError", error);
   }
 });
 

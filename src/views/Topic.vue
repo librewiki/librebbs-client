@@ -77,8 +77,8 @@ export default class TopicList extends Vue {
       const topicId = parseInt(this.$route.params.topicId);
       const topic = await getTopic(topicId);
       this.topic = topic;
-    } catch (err) {
-      store.commit("setError", "에러가 발생했습니다.");
+    } catch (error) {
+      store.commit("setError", error);
     } finally {
       this.busy = false;
     }

@@ -1,5 +1,5 @@
 <template lang="pug">
-.page-error {{ error }}
+.page-error {{ error.message }}
 </template>
 
 <script lang="ts">
