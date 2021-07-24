@@ -1,4 +1,5 @@
-import { Board, getBoards, getUserInfo } from "@/api";
+import { getBoards, getUserInfo } from "@/api";
+import type { Board } from "@/api";
 import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
 

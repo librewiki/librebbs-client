@@ -18,9 +18,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { postFile, postTopic } from "@/api";
+import type { Board } from "@/api";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/vue-editor";
-import '@toast-ui/editor/dist/i18n/ko-kr';
+import "@toast-ui/editor/dist/i18n/ko-kr";
+import store from "@/store";
 
 @Component({
   components: {
@@ -28,18 +30,20 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
   },
 })
 export default class NewTopic extends Vue {
-  @Prop() boardId!: number;
-
   title = "";
   editorOptions = {
     usageStatistics: false,
     initialEditType: "wysiwyg",
     hideModeSwitch: true,
-    language: "ko-KR"
+    language: "ko-KR",
   };
   $refs!: {
     toastuiEditor: Editor;
   };
+
+  get board(): Board {
+    return store.state.board;
+  }
 
   toBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -64,8 +68,8 @@ export default class NewTopic extends Vue {
 
   async handleSubmit(): Promise<void> {
     const markdown = this.$refs.toastuiEditor.invoke("getMarkdown");
-    await postTopic(this.boardId, this.title, markdown);
-    location.reload();
+    const topic = await postTopic(this.board.id, this.title, markdown);
+    this.$router.push(`/${this.board.name}/${topic.id}`);
   }
 }
 </script>

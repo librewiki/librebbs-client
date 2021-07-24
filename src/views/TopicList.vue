@@ -8,7 +8,7 @@
     div(slot="no-more")
     div(slot="no-results")
   hr
-  new-topic(:board-id="board.id")
+  new-topic
 </template>
 
 <script lang="ts">

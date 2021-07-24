@@ -94,13 +94,13 @@ async function postTopic(
   boardId: number,
   title: string,
   content: string
-): Promise<void> {
-  console.log(boardId, title, content);
-  await client.post("/topics", {
+): Promise<Topic> {
+  const { data } = await client.post<Topic>("/topics", {
     board_id: boardId,
     title,
     content,
   });
+  return data;
 }
 
 interface Comment {
