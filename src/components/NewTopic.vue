@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { postFile, postTopic } from "@/api";
 import type { Board } from "@/api";
 import "@toast-ui/editor/dist/toastui-editor.css";
