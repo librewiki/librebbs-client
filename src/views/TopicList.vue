@@ -12,6 +12,7 @@
               a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name )}`") {{ topic.author_name }}
               a.topic-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name )}`") (토론) - 
             span.topic-updated_at {{ $moment(topic.updated_at).endOf('minute').fromNow() + "에 업데이트됨" }}
+            hr
             .topic-name
               router-link(:to="`/${board.name}/${topic.id}`") {{ topic.title }}
   infinite-loading(@infinite="handleInfinite" :identifier="infiniteId")
@@ -65,7 +66,7 @@ export default class TopicList extends Vue {
 <style lang="scss">
   .topic-card {
     padding: 0.5rem 1rem 0.5rem 1rem;
-    border: 1px solid black;
+    border: 1px solid #e1e8ed;
     border-radius: 0.25rem;
     margin-bottom: 2rem;
   }
@@ -87,7 +88,7 @@ export default class TopicList extends Vue {
     height:80px;
   }
   .topic-name {
-    padding-top:1rem;
+    //padding-top:1rem;
     padding-right: calc(1.5rem + 80px);
     line-height:1.5rem;
   }

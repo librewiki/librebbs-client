@@ -11,6 +11,7 @@
       ref="toastuiEditor"
     )
   .field
+    span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
     .control
       button.button.is-link(@click="handleSubmit") 작성
 </template>
@@ -45,6 +46,10 @@ export default class NewTopic extends Vue {
     return store.state.board;
   }
 
+  get user(): typeof store.state.user {
+    return store.state.user;
+  }
+
   toBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -73,3 +78,17 @@ export default class NewTopic extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import "@/assets/style-variables.scss";
+.new-topic 
+  .control {
+  text-align:right;
+  }
+  .button:hover {
+    background-color:$primary;
+    color:white;
+    transition: 0.25s;
+  }
+
+</style>
