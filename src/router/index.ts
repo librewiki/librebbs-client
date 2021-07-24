@@ -37,12 +37,14 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   store.commit("setError", null);
   try {
+    const promises = [];
     if (!store.state.user.isInitialized && to.name !== "Auth") {
-      await store.dispatch("fetchUserInfo");
+      promises.push(store.dispatch("fetchUserInfo"));
     }
     if (to.params.boardName) {
-      await store.dispatch("fetchBoard", to.params.boardName);
+      promises.push(store.dispatch("fetchBoard", to.params.boardName));
     }
+    await Promise.all(promises);
     next();
   } catch (error) {
     store.commit("setError", error.message);
