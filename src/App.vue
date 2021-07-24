@@ -19,7 +19,7 @@
           section.main-content
             error-page(v-if="error")
             router-view(v-else)
-          //- liberty-footer.footer.main-footer
+          FooterContent
       .column.is-narrow.is-hidden-touch
         live-recent
 </template>
@@ -31,12 +31,15 @@ import type { Board } from "@/api";
 import NavBar from "@/components/NavBar.vue";
 import LiveRecent from "@/components/LiveRecent.vue";
 import ErrorPage from "@/components/ErrorPage.vue";
+import FooterContent from "@/components/FooterContent.vue";
+
 
 @Component({
   components: {
     NavBar,
     LiveRecent,
     ErrorPage,
+    FooterContent,
   },
 })
 export default class App extends Vue {
@@ -154,16 +157,6 @@ a.external {
     @include touch {
       padding: ($box-padding / 2);
     }
-  }
-  .main-footer {
-    padding: $box-padding;
-    @include touch {
-      padding: ($box-padding / 2);
-    }
-    border: 1px solid #e1e8ed;
-    border-bottom-left-radius: $radius-large;
-    border-bottom-right-radius: $radius-large;
-    background-color: $background;
   }
 }
 </style>
