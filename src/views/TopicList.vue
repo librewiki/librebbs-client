@@ -64,14 +64,14 @@ export default class TopicList extends Vue {
 
 <style lang="scss">
   .topic-card {
-    padding: 0.5rem 2rem 0.5rem 2rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
     border: 1px solid black;
     border-radius: 0.25rem;
-    line-height: 80px;
     margin-bottom: 2rem;
   }
   .card-body {
     padding-right:calc(80px+5rem);
+    min-height:80px;
   }
   .topic-updated_at {
     font-size:0.8rem;
@@ -84,8 +84,12 @@ export default class TopicList extends Vue {
     float: right;
     margin-left: 2rem;
     padding-left: 2rem;
-    border-left: 1px solid black;
     height:80px;
+  }
+  .topic-name {
+    padding-top:1rem;
+    padding-right: calc(1.5rem + 80px);
+    line-height:1.5rem;
   }
 
 </style>
