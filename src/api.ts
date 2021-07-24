@@ -71,8 +71,17 @@ interface Topic {
   updated_at: string;
 }
 
-async function getTopics(boardId: number): Promise<Topic[]> {
-  const { data } = await client.get<Topic[]>(`/boards/${boardId}/topics`);
+async function getTopics(
+  boardId: number,
+  offset: number,
+  limit: number
+): Promise<Topic[]> {
+  const { data } = await client.get<Topic[]>(`/boards/${boardId}/topics`, {
+    params: {
+      offset,
+      limit,
+    },
+  });
   return data;
 }
 
