@@ -67,7 +67,7 @@ const storeOptions: StoreOptions<State> = {
         store.commit("updateUserInfo", {
           isInitialized: true,
           isLoggedIn: true,
-          isAdmin: false,
+          isAdmin: data.groups.includes("boardmanager"),
           email: data.email,
           username: data.username,
         });
