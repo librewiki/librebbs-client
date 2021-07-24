@@ -1,7 +1,8 @@
 <template lang="pug">
 .page-topic
   .topic.box
-    h3.title.topic-title {{ topic.title }}
+    router-link(:to="`/${board.name}/${topic.id}`")
+      h3.title.topic-title {{ topic.title }}
   topic-comment-card.topic-content-card(
     v-for="comment in comments",
     :key="comment.id",
@@ -18,7 +19,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import InfiniteLoading, { StateChanger } from "vue-infinite-loading";
 import { getBoards, getComments, getTopic } from "@/api";
-import type { Topic, Comment } from "@/api";
+import type { Topic, Comment, Board } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
 import NewComment from "@/components/NewComment.vue";
 import store from "@/store";
@@ -40,6 +41,14 @@ export default class TopicList extends Vue {
     is_hidden: false,
     author_id: 0,
     author_name: "",
+    created_at: "",
+    updated_at: "",
+  };
+  board: Board = {
+    id: 0,
+    display_name: "",
+    name: "",
+    is_active: false,
     created_at: "",
     updated_at: "",
   };
@@ -80,6 +89,7 @@ export default class TopicList extends Vue {
       }
       const topicId = parseInt(this.$route.params.topicId);
       const topic = await getTopic(topicId);
+      this.board = board;
       this.topic = topic;
     } catch (err) {
       store.commit("setError", "에러가 발생했습니다.");
@@ -95,5 +105,9 @@ export default class TopicList extends Vue {
   .topic-content-card {
     margin-bottom: 1rem;
   }
+}
+
+.topic-title {
+  font-size:1.5rem;
 }
 </style>
