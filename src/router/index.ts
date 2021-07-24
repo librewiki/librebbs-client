@@ -34,12 +34,19 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   store.commit("setError", null);
-  if (!store.state.user.isInitialized && to.name !== "Auth") {
-    store.dispatch("fetchUserInfo");
+  try {
+    if (!store.state.user.isInitialized && to.name !== "Auth") {
+      await store.dispatch("fetchUserInfo");
+    }
+    if (to.params.boardName) {
+      await store.dispatch("fetchBoard", to.params.boardName);
+    }
+    next();
+  } catch (error) {
+    store.commit("setError", error.message);
   }
-  next();
 });
 
 export default router;

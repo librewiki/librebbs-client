@@ -18,7 +18,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import InfiniteLoading, { StateChanger } from "vue-infinite-loading";
-import { getBoards, getComments, getTopic } from "@/api";
+import { getComments, getTopic } from "@/api";
 import type { Topic, Comment, Board } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
 import NewComment from "@/components/NewComment.vue";
@@ -44,17 +44,13 @@ export default class TopicList extends Vue {
     created_at: "",
     updated_at: "",
   };
-  board: Board = {
-    id: 0,
-    display_name: "",
-    name: "",
-    is_active: false,
-    created_at: "",
-    updated_at: "",
-  };
   comments: Comment[] = [];
   busy = false;
   infiniteId = +new Date();
+
+  get board(): Board {
+    return store.state.board;
+  }
 
   refresh(): void {
     this.infiniteId += 1;
@@ -78,18 +74,8 @@ export default class TopicList extends Vue {
   async fetchData(): Promise<void> {
     this.busy = true;
     try {
-      const boardName = this.$route.params.boardName;
-      const boards = await getBoards();
-      const board = boards.find((x) => x.name === boardName);
-      if (board) {
-        store.commit("setTitle", board.display_name);
-      } else {
-        store.commit("setError", "존재하지 않는 게시판입니다.");
-        return;
-      }
       const topicId = parseInt(this.$route.params.topicId);
       const topic = await getTopic(topicId);
-      this.board = board;
       this.topic = topic;
     } catch (err) {
       store.commit("setError", "에러가 발생했습니다.");
@@ -108,6 +94,6 @@ export default class TopicList extends Vue {
 }
 
 .topic-title {
-  font-size:1.5rem;
+  font-size: 1.5rem;
 }
 </style>

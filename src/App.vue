@@ -17,69 +17,37 @@
               //-   .level-item
               //-     tool-box
           section.main-content
-            p(v-if="error") {{ error }}
-            router-view
+            error-page(v-if="error")
+            router-view(v-else)
           //- liberty-footer.footer.main-footer
       .column.is-narrow.is-hidden-touch
         live-recent
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import store from "@/store";
-import { getBoards } from "@/api";
 import type { Board } from "@/api";
 import NavBar from "@/components/NavBar.vue";
 import LiveRecent from "@/components/LiveRecent.vue";
-// import ToolBox from "@/components/ToolBox";
-// import LibertyFooter from "@/components/LibertyFooter";
-// import SiteNotice from "@/components/SiteNotice";
-// import BlockNotice from "@/components/BlockNotice";
+import ErrorPage from "@/components/ErrorPage.vue";
 
 @Component({
   components: {
     NavBar,
     LiveRecent,
+    ErrorPage,
   },
 })
 export default class App extends Vue {
   get title(): string {
-    return store.state.meta.title;
+    return store.state.board.display_name;
   }
-  get error(): string | null {
+  get error(): Error | null {
     return store.state.meta.error;
   }
-  board: Board = {
-    id: 0,
-    display_name: "",
-    name: "",
-    is_active: false,
-    created_at: "",
-    updated_at: "",
-  };
-  busy = false;
-
-  @Watch("$route.params", { immediate: true })
-  async fetchData(): Promise<void> {
-    this.busy = true;
-    try {
-      const boardName = this.$route.params.boardName;
-      console.log(boardName);
-      const boards = await getBoards();
-      const board = boards.find((x) => x.name === boardName);
-      console.log(board);
-      if (board) {
-        this.board = board;
-        store.commit("setTitle", board.display_name);
-      } else {
-        store.commit("setError", "존재하지 않는 게시판입니다.");
-        return;
-      }
-    } catch {
-      store.commit("setError", "에러가 발생했습니다.");
-    } finally {
-      this.busy = false;
-    }
+  get board(): Board {
+    return store.state.board;
   }
 }
 </script>

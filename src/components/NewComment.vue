@@ -18,7 +18,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { postFile, postComment } from "@/api";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/vue-editor";
-import '@toast-ui/editor/dist/i18n/ko-kr';
+import "@toast-ui/editor/dist/i18n/ko-kr";
 
 @Component({
   components: {
@@ -33,7 +33,7 @@ export default class NewComment extends Vue {
     usageStatistics: false,
     initialEditType: "wysiwyg",
     hideModeSwitch: true,
-    language: "ko-KR"
+    language: "ko-KR",
   };
   $refs!: {
     toastuiEditor: Editor;
@@ -76,6 +76,4 @@ export default class NewComment extends Vue {
     padding-left: 0.5rem;
   }
 }
-
 </style>
-

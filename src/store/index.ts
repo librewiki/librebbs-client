@@ -1,5 +1,4 @@
-import { getUserInfo } from "@/api";
-import { logout } from "@/auth";
+import { Board, getBoards, getUserInfo } from "@/api";
 import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
 
@@ -7,9 +6,9 @@ Vue.use(Vuex);
 
 interface State {
   meta: {
-    title: string;
-    error: string | null;
+    error: Error | null;
   };
+  board: Board;
   user: {
     isInitialized: boolean;
     isLoggedIn: boolean;
@@ -22,8 +21,15 @@ interface State {
 const storeOptions: StoreOptions<State> = {
   state: {
     meta: {
-      title: "",
       error: null,
+    },
+    board: {
+      id: 0,
+      display_name: "",
+      name: "",
+      is_active: false,
+      created_at: "",
+      updated_at: "",
     },
     user: {
       isInitialized: false,
@@ -34,10 +40,10 @@ const storeOptions: StoreOptions<State> = {
     },
   },
   mutations: {
-    setTitle(state, title: string) {
-      state.meta.title = title;
+    setBoard(state, board: Board) {
+      state.board = board;
     },
-    setError(state, error: string) {
+    setError(state, error: Error) {
       state.meta.error = error;
     },
     updateUserInfo(state, newState: State["user"]) {
@@ -66,6 +72,15 @@ const storeOptions: StoreOptions<State> = {
         });
       } catch {
         store.commit("resetUserInfo");
+      }
+    },
+    async fetchBoard(state, boardName: string) {
+      const boards = await getBoards();
+      const board = boards.find((x) => x.name === boardName);
+      if (board) {
+        store.commit("setBoard", board);
+      } else {
+        throw new Error("존재하지 않는 게시판입니다.");
       }
     },
   },
