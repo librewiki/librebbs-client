@@ -103,6 +103,48 @@ async function postTopic(
   return data;
 }
 
+async function hideTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_hidden: true,
+  });
+  return data;
+}
+
+async function unhideTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_hidden: false,
+  });
+  return data;
+}
+
+async function suspendTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_suspended: true,
+  });
+  return data;
+}
+
+async function unsuspendTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_suspended: false,
+  });
+  return data;
+}
+
+async function closeTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_closed: true,
+  });
+  return data;
+}
+
+async function uncloseTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_closed: false,
+  });
+  return data;
+}
+
 interface Comment {
   id: number;
   topic_id: number;
@@ -191,5 +233,11 @@ export {
   postFile,
   hideComment,
   unhideComment,
+  hideTopic,
+  unhideTopic,
+  suspendTopic,
+  unsuspendTopic,
+  closeTopic,
+  uncloseTopic,
 };
 export type { UserInfo, Board, Topic, Comment };

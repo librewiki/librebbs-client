@@ -3,8 +3,15 @@
   .topic.box
     router-link(:to="`/${board.name}/${topic.id}`")
       h3.title.topic-title {{ topic.title }}
+    .admin-tools(v-if="user.isAdmin")
+      button.button.is-small(@click="unhide" v-if="topic.is_hidden") 숨김 해제
+      button.button.is-small(@click="hide" v-else) 숨기기
+      button.button.is-small(@click="unsuspend" v-if="topic.is_suspended") 잠금 해제
+      button.button.is-small(@click="suspend" v-else) 잠그기
+      button.button.is-small(@click="unclose" v-if="topic.is_closed") 종료 취소
+      button.button.is-small(@click="close" v-else) 종료
   topic-comment-card.topic-content-card(
-    v-for="(comment,index) in comments",
+    v-for="(comment, index) in comments",
     :key="comment.id",
     :comment.sync="comments[index]"
   )
@@ -12,13 +19,24 @@
     div(slot="no-more")
     div(slot="no-results")
   hr
-  new-comment(:topic-id="topic.id", :refresh="refresh")
+  p(v-if="topic.is_closed") 이 주제는 종료되어 의견을 추가할 수 없습니다.
+  p(v-else-if="topic.is_suspended") 이 주제는 잠겨있어 의견을 추가할 수 없습니다.
+  new-comment(:topic-id="topic.id", :refresh="refresh" v-else)
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import InfiniteLoading, { StateChanger } from "vue-infinite-loading";
-import { getComments, getTopic } from "@/api";
+import {
+  getComments,
+  getTopic,
+  hideTopic,
+  unhideTopic,
+  suspendTopic,
+  unsuspendTopic,
+  closeTopic,
+  uncloseTopic,
+} from "@/api";
 import type { Topic, Comment, Board } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
 import NewComment from "@/components/NewComment.vue";
@@ -47,6 +65,10 @@ export default class TopicList extends Vue {
   comments: Comment[] = [];
   busy = false;
   infiniteId = +new Date();
+
+  get user(): typeof store.state.user {
+    return store.state.user;
+  }
 
   get board(): Board {
     return store.state.board;
@@ -88,6 +110,36 @@ export default class TopicList extends Vue {
     } finally {
       this.busy = false;
     }
+  }
+
+  async hide(): Promise<void> {
+    await hideTopic(this.topic.id);
+    this.$router.push(`/${this.board.name}`);
+  }
+
+  async unhide(): Promise<void> {
+    await unhideTopic(this.topic.id);
+    await this.fetchData();
+  }
+
+  async suspend(): Promise<void> {
+    await suspendTopic(this.topic.id);
+    await this.fetchData();
+  }
+
+  async unsuspend(): Promise<void> {
+    await unsuspendTopic(this.topic.id);
+    await this.fetchData();
+  }
+
+  async close(): Promise<void> {
+    await closeTopic(this.topic.id);
+    await this.fetchData();
+  }
+
+  async unclose(): Promise<void> {
+    await uncloseTopic(this.topic.id);
+    await this.fetchData();
   }
 }
 </script>
