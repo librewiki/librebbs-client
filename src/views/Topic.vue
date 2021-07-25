@@ -1,12 +1,14 @@
 <template lang="pug">
 .page-topic
-  .topic.box
+  .topic.box.level
+    router-link(:to="`/${board.name}/${topic.id}`")
+      h3.title.topic-title {{ decodeTitle(topic.title) }}
     .admin-tools.dropdown.is-right(
       v-if="user.isAdmin",
       v-bind:class="{ 'is-active': adminDropdown }"
     )
       .dropdown-trigger
-        button.button.is-small(@click="adminDropdownToggle") 관리자 메뉴
+        button.button.is-small(@click="adminDropdownToggle",v-on:blur="adminDropdownToggle") 관리자 메뉴
       .dropdown-menu
         .dropdown-content
           .dropdown-item.admin-button(@click="unhide", v-if="topic.is_hidden") 숨김 해제
@@ -18,8 +20,7 @@
           .dropdown-item.admin-button(@click="suspend", v-else) 잠그기
           .dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
           .dropdown-item.admin-button(@click="close", v-else) 종료
-    router-link(:to="`/${board.name}/${topic.id}`")
-      h3.title.topic-title {{ decodeTitle(topic.title) }}
+
 
   topic-comment-card.topic-content-card(
     v-for="(comment, index) in comments",
@@ -197,9 +198,6 @@ export default class TopicList extends Vue {
     }
     .admin-button {
       cursor: pointer;
-    }
-    .admin-tools {
-      float: right;
     }
     .admin-button:hover {
       color: $navbar-item-hover-color;

@@ -4,20 +4,22 @@
     .topic-comment-info
       a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.author_name )}`")
         .topic-comment-author {{ comment.author_name }}
-    .topic-comment-date {{ $moment(comment.created_at).add(9,'hour').format('LLLL') }}
-    .admin-tools.dropdown.is-right(
-      v-if="user.isAdmin",
-      v-bind:class="{ 'is-active': adminDropdown }")
-      .dropdown-trigger
-        button.button.is-small(@click="adminDropdownToggle")
-          b-icon(icon="angle-down")
-      .dropdown-menu
-        .dropdown-content
-          template(v-if="comment.is_hidden")
-            .dropdown-item.admin-button(@click="unhide") 숨기기 취소
-            .dropdown-item.admin-button(@click="showHidden") 보기
-          .dropdown-item.admin-button(@click="hide" v-else) 숨기기
-          a.dropdown-item.admin-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
+      a.comment-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name )}`") (토론)
+    .topic-comment-tools
+      .topic-comment-date {{ $moment(comment.created_at).add(9,'hour').format('LLLL') }}
+      .admin-tools.dropdown.is-right(
+        v-if="user.isAdmin",
+        v-bind:class="{ 'is-active': adminDropdown }")
+        .dropdown-trigger
+          button.button.is-small(@click="adminDropdownToggle",v-on:blur="adminDropdownToggle")
+            b-icon(icon="angle-down")
+        .dropdown-menu
+          .dropdown-content
+            template(v-if="comment.is_hidden")
+              .dropdown-item.admin-button(@click="unhide") 숨기기 취소
+              .dropdown-item.admin-button(@click="showHidden") 보기
+            .dropdown-item.admin-button(@click="hide" v-else) 숨기기
+            a.dropdown-item.admin-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
       
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
     viewer(:initialValue="comment.content" v-if="comment.content")
@@ -82,7 +84,16 @@ export default class TopicContentCard extends Vue {
   .topic-comment-info {
     flex: 1;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+  }
+  .topic-comment-tools {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .comment-author-link {
+    margin-left:0.5rem;
+    font-size:0.8rem;
   }
   .topic-comment-date {
     margin-right:1rem;
@@ -98,9 +109,6 @@ export default class TopicContentCard extends Vue {
   }
   .admin-button {
     cursor: pointer;
-  }
-  .admin-tools {
-    float: right;
   }
   .admin-button:hover {
     color: $navbar-item-hover-color;
