@@ -14,7 +14,7 @@
             span.topic-updated_at {{ $moment(topic.updated_at).endOf('minute').fromNow() + "에 업데이트됨" }}
             hr
             .topic-name
-              router-link(:to="`/${board.name}/${topic.id}`") {{ topic.title }}
+              router-link(:to="`/${board.name}/${topic.id}`") {{ decodeTitle(topic.title) }}
   infinite-loading(@infinite="handleInfinite" :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
@@ -31,6 +31,8 @@ import type { Topic, Board } from "@/api";
 import NewTopic from "@/components/NewTopic.vue";
 import store from "@/store";
 import md5 from "md5";
+import { AllHtmlEntities } from "html-entities";
+
 
 @Component({
   components: {
@@ -46,6 +48,10 @@ export default class TopicList extends Vue {
 
   get board(): Board {
     return store.state.board;
+  }
+
+  decodeTitle(x: string): string {
+    return AllHtmlEntities.decode(x);
   }
 
   async handleInfinite($state: StateChanger): Promise<void> {
@@ -70,33 +76,32 @@ export default class TopicList extends Vue {
 </script>
 
 <style lang="scss">
-  .topic-card {
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border: 1px solid #e1e8ed;
-    border-radius: 0.25rem;
-    margin-bottom: 2rem;
-  }
-  .card-body {
-    padding-right:calc(80px+5rem);
-    min-height:80px;
-  }
-  .topic-updated_at {
-    font-size:0.8rem;
-  }
-  .topic-author-link {
-    font-size:0.75rem;
-    margin-left:0.25rem;
-  }
-  .topic-author-img {
-    float: right;
-    margin-left: 2rem;
-    padding-left: 2rem;
-    height:80px;
-  }
-  .topic-name {
-    //padding-top:1rem;
-    padding-right: calc(1.5rem + 80px);
-    line-height:1.5rem;
-  }
-
+.topic-card {
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border: 1px solid #e1e8ed;
+  border-radius: 0.25rem;
+  margin-bottom: 2rem;
+}
+.card-body {
+  padding-right: calc(80px+5rem);
+  min-height: 80px;
+}
+.topic-updated_at {
+  font-size: 0.8rem;
+}
+.topic-author-link {
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}
+.topic-author-img {
+  float: right;
+  margin-left: 2rem;
+  padding-left: 2rem;
+  height: 80px;
+}
+.topic-name {
+  //padding-top:1rem;
+  padding-right: calc(1.5rem + 80px);
+  line-height: 1.5rem;
+}
 </style>

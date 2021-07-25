@@ -2,7 +2,7 @@
 .page-topic
   .topic.box
     router-link(:to="`/${board.name}/${topic.id}`")
-      h3.title.topic-title {{ topic.title }}
+      h3.title.topic-title {{ decodeTitle(topic.title) }}
     .admin-tools(v-if="user.isAdmin")
       button.button.is-small(@click="unhide" v-if="topic.is_hidden") 숨김 해제
       button.button.is-small(@click="hide" v-else) 숨기기
@@ -41,6 +41,7 @@ import type { Topic, Comment, Board } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
 import NewComment from "@/components/NewComment.vue";
 import store from "@/store";
+import { AllHtmlEntities } from "html-entities";
 
 @Component({
   components: {
@@ -72,6 +73,10 @@ export default class TopicList extends Vue {
 
   get board(): Board {
     return store.state.board;
+  }
+
+  decodeTitle(x: string): string {
+    return AllHtmlEntities.decode(x);
   }
 
   refresh(): void {
