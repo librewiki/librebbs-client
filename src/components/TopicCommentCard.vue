@@ -9,7 +9,7 @@
           button.button.is-small(@click="unhide") 숨기기 취소
           button.button.is-small(@click="showHidden") 보기
         button.button.is-small(@click="hide" v-else) 숨기기
-      .topic-comment-date {{ $moment(comment.created_at).format('LLLL') }}
+      .topic-comment-date {{ $moment(comment.created_at).add(9,'hour').format('LLLL') }}
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
     viewer(:initialValue="comment.content" v-if="comment.content")
     p(v-else) 이 의견은 관리자에 의해 숨겨졌습니다.

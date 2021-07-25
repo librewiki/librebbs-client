@@ -11,7 +11,7 @@
             span.topic-author
               a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name )}`") {{ topic.author_name }}
               a.topic-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name )}`") (토론) - 
-            span.topic-updated_at {{ $moment(topic.updated_at).endOf('minute').fromNow() + "에 업데이트됨" }}
+            span.topic-updated_at {{ $moment(topic.updated_at).add(9,'hour').endOf('minute').fromNow() + "에 업데이트됨" }}
             hr
             .topic-name
               router-link(:to="`/${board.name}/${topic.id}`") {{ decodeTitle(topic.title) }}

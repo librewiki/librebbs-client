@@ -16,7 +16,6 @@ import store from "@/store";
 export default class Tools extends Vue {
 
     get canWrite() : boolean {
-        console.log(store.state.canWrite);
         return store.state.canWrite;
     }
 
