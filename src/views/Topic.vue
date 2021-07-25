@@ -2,7 +2,7 @@
 .page-topic
   .topic.box
     router-link(:to="`/${board.name}/${topic.id}`")
-      h3.title.topic-title {{ decodeTitle(title) }}
+      h3.title.topic-title {{ decodeTitle(topic.title) }}
     .admin-tools(v-if="user.isAdmin")
       button.button.is-small(@click="unhide" v-if="topic.is_hidden") 숨김 해제
       button.button.is-small(@click="hide" v-else) 숨기기
