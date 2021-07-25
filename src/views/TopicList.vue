@@ -3,11 +3,6 @@
   ul
     li(v-for="topic in topics")
       .card.topic-card
-        .topic-author-img
-          gravatar.user-gravatar(
-            :hash="genGravataHash(topic)",
-            default-img="identicon"
-          )
         .card-body
           span.topic-author
             a(
@@ -20,6 +15,11 @@
           hr
           .topic-name
             router-link(:to="`/${board.name}/${topic.id}`") {{ decodeTitle(topic.title) }}
+        .topic-author-img
+          gravatar.user-gravatar(
+            :hash="genGravataHash(topic)",
+            default-img="identicon"
+          )
   infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
@@ -95,10 +95,14 @@ export default class TopicList extends Vue {
   border: 1px solid #e1e8ed;
   border-radius: 0.25rem;
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .card-body {
-  padding-right: calc(80px+5rem);
+  max-width: 80%;
   min-height: 80px;
+  flex: 1;
 }
 .topic-updated_at {
   font-size: 0.8rem;
@@ -108,14 +112,21 @@ export default class TopicList extends Vue {
   margin-left: 0.25rem;
 }
 .topic-author-img {
-  float: right;
-  margin-left: 2rem;
-  padding-left: 2rem;
+  max-width: 80px;
+  width: auto;
   height: 80px;
+  flex: 1;
 }
-.topic-name {
-  //padding-top:1rem;
-  padding-right: calc(1.5rem + 80px);
-  line-height: 1.5rem;
+@media (max-width: 400px) {
+  .topic-card {
+    display: block;
+    align-content: none;
+  }
+  .card-body {
+    flex: none;
+  }
+  .topic-author-img {
+    display: none;
+  }
 }
 </style>
