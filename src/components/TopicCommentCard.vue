@@ -9,7 +9,8 @@
       v-if="user.isAdmin",
       v-bind:class="{ 'is-active': adminDropdown }")
       .dropdown-trigger
-        button.button.is-small(@click="adminDropdownToggle") 관리자 메뉴
+        button.button.is-small(@click="adminDropdownToggle")
+          b-icon(icon="angle-down")
       .dropdown-menu
         .dropdown-content
           template(v-if="comment.is_hidden")
@@ -100,7 +101,6 @@ export default class TopicContentCard extends Vue {
   }
   .admin-tools {
     float: right;
-    width: 100px;
   }
   .admin-button:hover {
     color: $navbar-item-hover-color;

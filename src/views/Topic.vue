@@ -200,7 +200,6 @@ export default class TopicList extends Vue {
     }
     .admin-tools {
       float: right;
-      width: 100px;
     }
     .admin-button:hover {
       color: $navbar-item-hover-color;
