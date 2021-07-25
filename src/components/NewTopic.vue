@@ -25,9 +25,10 @@ import { Editor } from "@toast-ui/vue-editor";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import store from "@/store";
 
+
 @Component({
   components: {
-    Editor,
+    Editor
   },
 })
 export default class NewTopic extends Vue {
@@ -65,10 +66,16 @@ export default class NewTopic extends Vue {
       "addHook",
       "addImageBlobHook",
       async (file: File, callback: Callback): Promise<void> => {
-        const { path } = await postFile(file.name, await this.toBase64(file));
-        callback(`https://image.librewiki.net/${path}`);
+        if (file.size > 10 * 1000000) {
+          store.commit("setErrormodal","업로드할 파일 용량은 10MB까지만 가능합니다.");
+          return;
+        }
+        else {
+          const { path } = await postFile(file.name, await this.toBase64(file));
+          callback(`https://image.librewiki.net/${path}`);
+        }
       }
-    );
+    )
   }
 
   async handleSubmit(): Promise<void> {
@@ -90,5 +97,6 @@ export default class NewTopic extends Vue {
     color:white;
     transition: 0.25s;
   }
+
 
 </style>

@@ -60,8 +60,14 @@ export default class NewComment extends Vue {
       "addHook",
       "addImageBlobHook",
       async (file: File, callback: Callback): Promise<void> => {
-        const { path } = await postFile(file.name, await this.toBase64(file));
-        callback(`https://image.librewiki.net/${path}`);
+        if (file.size > 10 * 1000000) {
+          store.commit("setErrormodal","업로드할 파일 용량은 10MB까지만 가능합니다.");
+          return;
+        }
+        else {
+          const { path } = await postFile(file.name, await this.toBase64(file));
+          callback(`https://image.librewiki.net/${path}`);
+        }
       }
     );
   }

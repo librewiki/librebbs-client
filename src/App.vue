@@ -22,6 +22,7 @@
           FooterContent
       .column.is-narrow.is-hidden-touch
         live-recent
+  error-modal(v-if="modalerror")
 </template>
 
 <script lang="ts">
@@ -31,6 +32,7 @@ import type { Board } from "@/api";
 import NavBar from "@/components/NavBar.vue";
 import LiveRecent from "@/components/LiveRecent.vue";
 import ErrorPage from "@/components/ErrorPage.vue";
+import ErrorModal from "@/components/ErrorModal.vue";
 import FooterContent from "@/components/FooterContent.vue";
 
 
@@ -39,6 +41,7 @@ import FooterContent from "@/components/FooterContent.vue";
     NavBar,
     LiveRecent,
     ErrorPage,
+    ErrorModal,
     FooterContent,
   },
 })
@@ -51,6 +54,9 @@ export default class App extends Vue {
   }
   get board(): Board {
     return store.state.board;
+  }
+  get modalerror(): Error | null {
+    return store.state.modalError;
   }
 }
 </script>

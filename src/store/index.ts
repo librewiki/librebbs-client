@@ -17,6 +17,7 @@ interface State {
     email: string;
     username: string;
   };
+  modalError : Error | null;
 }
 
 const storeOptions: StoreOptions<State> = {
@@ -39,6 +40,7 @@ const storeOptions: StoreOptions<State> = {
       email: "",
       username: "",
     },
+    modalError: null,
   },
   mutations: {
     setBoard(state, board: Board) {
@@ -46,6 +48,9 @@ const storeOptions: StoreOptions<State> = {
     },
     setError(state, error: Error) {
       state.meta.error = error;
+    },
+    setErrormodal(state, error: Error) {
+      state.modalError = error;
     },
     updateUserInfo(state, newState: State["user"]) {
       state.user = newState;
