@@ -5,9 +5,9 @@
     .columns.main-columns
       .column.main-column
         //- block-notice
-        //- site-notice
         article.box.is-paddingless
           header.main-header
+            SiteNotice
             .level.title-wrapper-row
               .level-left
                 .level-item
@@ -34,6 +34,7 @@ import LiveRecent from "@/components/LiveRecent.vue";
 import ErrorPage from "@/components/ErrorPage.vue";
 import ErrorModal from "@/components/ErrorModal.vue";
 import FooterContent from "@/components/FooterContent.vue";
+import SiteNotice from "@/components/SiteNotice.vue";
 
 
 @Component({
@@ -43,6 +44,7 @@ import FooterContent from "@/components/FooterContent.vue";
     ErrorPage,
     ErrorModal,
     FooterContent,
+    SiteNotice,
   },
 })
 export default class App extends Vue {
