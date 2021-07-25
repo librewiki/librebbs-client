@@ -4,12 +4,20 @@
     .topic-comment-info
       a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.author_name )}`")
         .topic-comment-author {{ comment.author_name }}
-      .admin-tools(v-if="user.isAdmin")
-        template(v-if="comment.is_hidden")
-          button.button.is-small(@click="unhide") 숨기기 취소
-          button.button.is-small(@click="showHidden") 보기
-        button.button.is-small(@click="hide" v-else) 숨기기
-      .topic-comment-date {{ $moment(comment.created_at).add(9,'hour').format('LLLL') }}
+    .topic-comment-date {{ $moment(comment.created_at).add(9,'hour').format('LLLL') }}
+    .admin-tools.dropdown.is-right(
+      v-if="user.isAdmin",
+      v-bind:class="{ 'is-active': adminDropdown }")
+      .dropdown-trigger
+        button.button.is-small(@click="adminDropdownToggle") 관리자 메뉴
+      .dropdown-menu
+        .dropdown-content
+          template(v-if="comment.is_hidden")
+            .dropdown-item.admin-button(@click="unhide") 숨기기 취소
+            .dropdown-item.admin-button(@click="showHidden") 보기
+          .dropdown-item.admin-button(@click="hide" v-else) 숨기기
+          a.dropdown-item.admin-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
+      
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
     viewer(:initialValue="comment.content" v-if="comment.content")
     p(v-else) 이 의견은 관리자에 의해 숨겨졌습니다.
@@ -30,6 +38,7 @@ import { Viewer } from "@toast-ui/vue-editor";
 })
 export default class TopicContentCard extends Vue {
   @Prop() comment!: Comment;
+  adminDropdown = false;
 
   get user(): typeof store.state.user {
     return store.state.user;
@@ -49,6 +58,13 @@ export default class TopicContentCard extends Vue {
     const data = await getComment(this.comment.id, true);
     this.$emit("update:comment", data);
   }
+  adminDropdownToggle(): void {
+    if (this.adminDropdown == true) {
+      this.adminDropdown = false;
+    } else {
+      this.adminDropdown = true;
+    }
+  }
 }
 </script>
 
@@ -67,6 +83,9 @@ export default class TopicContentCard extends Vue {
     display: flex;
     justify-content: space-between;
   }
+  .topic-comment-date {
+    margin-right:1rem;
+  }
   .topic-comment-admin {
     margin-left: 1rem;
   }
@@ -75,6 +94,18 @@ export default class TopicContentCard extends Vue {
   }
   .hidden-comment {
     background-color: $light;
+  }
+  .admin-button {
+    cursor: pointer;
+  }
+  .admin-tools {
+    float: right;
+    width: 100px;
+  }
+  .admin-button:hover {
+    color: $navbar-item-hover-color;
+    background-color: $primary;
+    transition: 0.25s;
   }
 }
 </style>

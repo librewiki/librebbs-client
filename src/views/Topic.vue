@@ -1,7 +1,7 @@
 <template lang="pug">
 .page-topic
   .topic.box
-    .admin-tools.dropdown(
+    .admin-tools.dropdown.is-right(
       v-if="user.isAdmin",
       v-bind:class="{ 'is-active': adminDropdown }"
     )
