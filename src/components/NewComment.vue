@@ -83,6 +83,7 @@ export default class NewComment extends Vue {
     await postComment(this.topicId, markdown);
     this.$refs.toastuiEditor.invoke("reset");
     this.refresh();
+    this.modalclose();
   }
 
   get editorOpen() : boolean {

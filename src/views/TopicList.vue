@@ -76,6 +76,7 @@ export default class TopicList extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/assets/style-variables.scss";
 .topic-card {
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: 1px solid #e1e8ed;

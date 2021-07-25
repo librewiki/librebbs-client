@@ -1,27 +1,38 @@
 <template lang="pug">
 .page-topic
   .topic.box
+    .admin-tools.dropdown(
+      v-if="user.isAdmin",
+      v-bind:class="{ 'is-active': adminDropdown }"
+    )
+      .dropdown-trigger
+        button.button.is-small(@click="adminDropdownToggle") 관리자 메뉴
+      .dropdown-menu
+        .dropdown-content
+          .dropdown-item.admin-button(@click="unhide", v-if="topic.is_hidden") 숨김 해제
+          .dropdown-item.admin-button(@click="hide", v-else) 숨기기
+          .dropdown-item.admin-button(
+            @click="unsuspend",
+            v-if="topic.is_suspended"
+          ) 잠금 해제
+          .dropdown-item.admin-button(@click="suspend", v-else) 잠그기
+          .dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
+          .dropdown-item.admin-button(@click="close", v-else) 종료
     router-link(:to="`/${board.name}/${topic.id}`")
       h3.title.topic-title {{ decodeTitle(topic.title) }}
-    .admin-tools(v-if="user.isAdmin")
-      button.button.is-small(@click="unhide" v-if="topic.is_hidden") 숨김 해제
-      button.button.is-small(@click="hide" v-else) 숨기기
-      button.button.is-small(@click="unsuspend" v-if="topic.is_suspended") 잠금 해제
-      button.button.is-small(@click="suspend" v-else) 잠그기
-      button.button.is-small(@click="unclose" v-if="topic.is_closed") 종료 취소
-      button.button.is-small(@click="close" v-else) 종료
+
   topic-comment-card.topic-content-card(
     v-for="(comment, index) in comments",
     :key="comment.id",
     :comment.sync="comments[index]"
   )
-  infinite-loading(@infinite="handleInfinite" :identifier="infiniteId")
+  infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
   hr
   p(v-if="topic.is_closed") 이 주제는 종료되어 의견을 추가할 수 없습니다.
   p(v-else-if="topic.is_suspended") 이 주제는 잠겨있어 의견을 추가할 수 없습니다.
-  new-comment(:topic-id="topic.id", :refresh="refresh" v-else)
+  new-comment(:topic-id="topic.id", :refresh="refresh", v-else)
 </template>
 
 <script lang="ts">
@@ -66,6 +77,7 @@ export default class TopicList extends Vue {
   comments: Comment[] = [];
   busy = false;
   infiniteId = +new Date();
+  adminDropdown = false;
 
   get user(): typeof store.state.user {
     return store.state.user;
@@ -118,12 +130,15 @@ export default class TopicList extends Vue {
     }
   }
 
-  checkCanWrite(tp : Topic) : void {
-    if (tp.is_closed == true || tp.is_suspended == true || tp.is_hidden == true ) {
+  checkCanWrite(tp: Topic): void {
+    if (
+      tp.is_closed == true ||
+      tp.is_suspended == true ||
+      tp.is_hidden == true
+    ) {
       store.commit("setCanWrite", false);
       console.log(tp.is_closed);
-    }
-    else {
+    } else {
       store.commit("setCanWrite", true);
     }
   }
@@ -157,17 +172,43 @@ export default class TopicList extends Vue {
     await uncloseTopic(this.topic.id);
     await this.fetchData();
   }
+
+  adminDropdownToggle(): void {
+    if (this.adminDropdown == true) {
+      this.adminDropdown = false;
+    } else {
+      this.adminDropdown = true;
+    }
+  }
 }
 </script>
 
 <style lang="scss">
+@import "@/assets/style-variables.scss";
 .page-topic {
   .topic-content-card {
     margin-bottom: 1rem;
   }
+  .topic {
+    min-height:2rem;
+  }
+    .topic-title {
+      font-size: 1.5rem;
+    }
+    .admin-button {
+      cursor: pointer;
+    }
+    .admin-tools {
+      float: right;
+      width: 100px;
+    }
+    .admin-button:hover {
+      color: $navbar-item-hover-color;
+      background-color: $primary;
+      transition: 0.25s;
+    }
+  
 }
 
-.topic-title {
-  font-size: 1.5rem;
-}
+
 </style>

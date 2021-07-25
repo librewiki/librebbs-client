@@ -89,6 +89,7 @@ export default class NewTopic extends Vue {
     const markdown = this.$refs.toastuiEditor.invoke("getMarkdown");
     const topic = await postTopic(this.board.id, this.title, markdown);
     this.$router.push(`/${this.board.name}/${topic.id}`);
+    this.modalclose();
   }
 
   get editorOpen() : boolean {
