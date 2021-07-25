@@ -5,7 +5,7 @@
       .card.topic-card
           .topic-author-img
             gravatar.user-gravatar(
-              hash="f3ada405ce890b6f8204094deb12d8a8"
+              :hash=`genGravataHash(topic)`
               default-img="identicon")
           .card-body
             span.topic-author
@@ -30,6 +30,7 @@ import { getTopics } from "@/api";
 import type { Topic, Board } from "@/api";
 import NewTopic from "@/components/NewTopic.vue";
 import store from "@/store";
+import md5 from "md5";
 
 @Component({
   components: {
@@ -59,6 +60,11 @@ export default class TopicList extends Vue {
     } else {
       $state.loaded();
     }
+  }
+
+  genGravataHash(topic : Topic) : string {
+    const key = topic.id + topic.author_name;
+    return md5(key);
   }
 }
 </script>
