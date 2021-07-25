@@ -32,10 +32,9 @@ import { Editor } from "@toast-ui/vue-editor";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import store from "@/store";
 
-
 @Component({
   components: {
-    Editor
+    Editor,
   },
 })
 export default class NewTopic extends Vue {
@@ -74,15 +73,17 @@ export default class NewTopic extends Vue {
       "addImageBlobHook",
       async (file: File, callback: Callback): Promise<void> => {
         if (file.size > 10 * 1000000) {
-          store.commit("setErrormodal","업로드할 파일 용량은 10MB까지만 가능합니다.");
+          store.commit(
+            "setErrormodal",
+            "업로드할 파일 용량은 10MB까지만 가능합니다."
+          );
           return;
-        }
-        else {
+        } else {
           const { path } = await postFile(file.name, await this.toBase64(file));
           callback(`https://image.librewiki.net/${path}`);
         }
       }
-    )
+    );
   }
 
   async handleSubmit(): Promise<void> {
@@ -92,11 +93,11 @@ export default class NewTopic extends Vue {
     this.modalclose();
   }
 
-  get editorOpen() : boolean {
-    return store.state.editorOpen
+  get editorOpen(): boolean {
+    return store.state.editorOpen;
   }
 
-  modalclose() : void {
+  modalclose(): void {
     store.commit("setEditorOpen", false);
   }
 }
@@ -104,18 +105,15 @@ export default class NewTopic extends Vue {
 
 <style lang="scss">
 @import "@/assets/style-variables.scss";
-.modal-card-foot
-  .field {
-    width:100%;
-  }
-    .control {
-    text-align:right;
-    }
-    .button:hover {
-      background-color:$primary;
-      color:white;
-      transition: 0.25s;
-    }
-
-
+.modal-card-foot .field {
+  width: 100%;
+}
+.control {
+  text-align: right;
+}
+.button:hover {
+  background-color: $primary;
+  color: white;
+  transition: 0.25s;
+}
 </style>

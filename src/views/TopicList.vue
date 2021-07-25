@@ -3,19 +3,24 @@
   ul
     li(v-for="topic in topics")
       .card.topic-card
-          .topic-author-img
-            gravatar.user-gravatar(
-              :hash=`genGravataHash(topic)`
-              default-img="identicon")
-          .card-body
-            span.topic-author
-              a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name )}`") {{ topic.author_name }}
-              a.topic-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name )}`") (토론) - 
-            span.topic-updated_at {{ $moment(topic.updated_at).add(9,'hour').endOf('minute').fromNow() + "에 업데이트됨" }}
-            hr
-            .topic-name
-              router-link(:to="`/${board.name}/${topic.id}`") {{ decodeTitle(topic.title) }}
-  infinite-loading(@infinite="handleInfinite" :identifier="infiniteId")
+        .topic-author-img
+          gravatar.user-gravatar(
+            :hash="genGravataHash(topic)",
+            default-img="identicon"
+          )
+        .card-body
+          span.topic-author
+            a(
+              :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
+            ) {{ topic.author_name }}
+            a.topic-author-link(
+              :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
+            ) (토론) -
+          span.topic-updated_at {{ $moment(topic.updated_at).add(9, 'hour').endOf('minute').fromNow() + '에 업데이트됨' }}
+          hr
+          .topic-name
+            router-link(:to="`/${board.name}/${topic.id}`") {{ decodeTitle(topic.title) }}
+  infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
   hr
@@ -32,7 +37,6 @@ import NewTopic from "@/components/NewTopic.vue";
 import store from "@/store";
 import md5 from "md5";
 import { AllHtmlEntities } from "html-entities";
-
 
 @Component({
   components: {
@@ -68,9 +72,18 @@ export default class TopicList extends Vue {
     }
   }
 
-  genGravataHash(topic : Topic) : string {
+  genGravataHash(topic: Topic): string {
     const key = topic.id + topic.author_name;
     return md5(key);
+  }
+
+  mounted(): void {
+    if (
+      store.state.board.is_active == true &&
+      store.state.user.isBlocked == false
+    ) {
+      store.commit("setCanWrite", true);
+    }
   }
 }
 </script>

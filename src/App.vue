@@ -76,6 +76,7 @@ html {
   background-color: #f5f5f5;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  font-size: 15px;
 }
 a.new {
   color: $newlink-color;

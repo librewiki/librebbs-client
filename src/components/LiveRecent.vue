@@ -8,13 +8,13 @@ nav.panel.live-recent
             :class="{ 'is-active': mode === 'DOCUMENT' }",
             @click="mode = 'DOCUMENT'; fetchLiveRecent()",
             role="button"
-          ) 최근바뀜
+          ) 최근 바뀜
         li
           a(
             :class="{ 'is-active': mode === 'TOPIC' }",
             @click="mode = 'TOPIC'; fetchLiveRecent()",
             role="button"
-          ) 최근토론
+          ) 최근 토론
   .live-recent-content
     a.panel-block(
       v-for="item in items",
@@ -142,6 +142,7 @@ export default class LiveRecent extends Vue {
   }
   .live-recent-content {
     background-color: white;
+    font-size:0.8rem;
   }
   .live-recent-tag {
     color: #b73333;

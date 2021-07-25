@@ -14,12 +14,13 @@ interface State {
     isInitialized: boolean;
     isLoggedIn: boolean;
     isAdmin: boolean;
+    isBlocked: boolean;
     email: string;
     username: string;
   };
-  modalError : Error | null;
-  canWrite : boolean;
-  editorOpen : boolean;
+  modalError: Error | null;
+  canWrite: boolean;
+  editorOpen: boolean;
 
 }
 
@@ -40,8 +41,9 @@ const storeOptions: StoreOptions<State> = {
       isInitialized: false,
       isLoggedIn: false,
       isAdmin: false,
+      isBlocked: false,
       email: "",
-      username: "",
+      username: ""
     },
     modalError: null,
     canWrite: false,
@@ -71,6 +73,7 @@ const storeOptions: StoreOptions<State> = {
         isInitialized: true,
         isLoggedIn: false,
         isAdmin: false,
+        isBlocked: false,
         email: "",
         username: "",
       };
@@ -84,6 +87,7 @@ const storeOptions: StoreOptions<State> = {
           isInitialized: true,
           isLoggedIn: true,
           isAdmin: data.groups.includes("boardmanager"),
+          isBlocked: data.blocked,
           email: data.email,
           username: data.username,
         });

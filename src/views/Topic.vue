@@ -8,7 +8,10 @@
       v-bind:class="{ 'is-active': adminDropdown }"
     )
       .dropdown-trigger
-        button.button.is-small(@click="adminDropdownToggle",v-on:blur="adminDropdownToggle") 관리자 메뉴
+        button.button.is-small(
+          @click="adminDropdownToggle",
+          v-on:blur="adminDropdownToggle"
+        ) 관리자 메뉴
       .dropdown-menu
         .dropdown-content
           .dropdown-item.admin-button(@click="unhide", v-if="topic.is_hidden") 숨김 해제
@@ -21,7 +24,6 @@
           .dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
           .dropdown-item.admin-button(@click="close", v-else) 종료
 
-
   topic-comment-card.topic-content-card(
     v-for="(comment, index) in comments",
     :key="comment.id",
@@ -33,6 +35,7 @@
   hr
   p(v-if="topic.is_closed") 이 주제는 종료되어 의견을 추가할 수 없습니다.
   p(v-else-if="topic.is_suspended") 이 주제는 잠겨있어 의견을 추가할 수 없습니다.
+  p(v-else-if="user.isBlocked") 차단되어 있어 의견을 추가할 수 없습니다.
   new-comment(:topic-id="topic.id", :refresh="refresh", v-else)
 </template>
 
@@ -135,10 +138,10 @@ export default class TopicList extends Vue {
     if (
       tp.is_closed == true ||
       tp.is_suspended == true ||
-      tp.is_hidden == true
+      tp.is_hidden == true ||
+      store.state.user.isBlocked == true
     ) {
       store.commit("setCanWrite", false);
-      console.log(tp.is_closed);
     } else {
       store.commit("setCanWrite", true);
     }
@@ -191,21 +194,18 @@ export default class TopicList extends Vue {
     margin-bottom: 1rem;
   }
   .topic {
-    min-height:2rem;
+    min-height: 2rem;
   }
-    .topic-title {
-      font-size: 1.5rem;
-    }
-    .admin-button {
-      cursor: pointer;
-    }
-    .admin-button:hover {
-      color: $navbar-item-hover-color;
-      background-color: $primary;
-      transition: 0.25s;
-    }
-  
+  .topic-title {
+    font-size: 1.5rem;
+  }
+  .admin-button {
+    cursor: pointer;
+  }
+  .admin-button:hover {
+    color: $navbar-item-hover-color;
+    background-color: $primary;
+    transition: 0.25s;
+  }
 }
-
-
 </style>

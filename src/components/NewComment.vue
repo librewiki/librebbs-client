@@ -2,22 +2,22 @@
 .modal(v-bind:class="{ 'is-active': editorOpen }")
   .modal-background
   .modal-card
-      .modal-card-head
-        label.modal-card-title#label_newtopic 새 의견 추가하기
-        button.delete(@click="modalclose")
-      .modal-card-body
-        .new-topic
-          .field
-            editor(
-              :options="editorOptions",
-              initialEditType="wysiwyg",
-              ref="toastuiEditor"
-            )
-      .modal-card-foot
+    .modal-card-head
+      label#label_newtopic.modal-card-title 새 의견 추가하기
+      button.delete(@click="modalclose")
+    .modal-card-body
+      .new-topic
         .field
-          span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
-          .control
-            button.button.is-link(@click="handleSubmit") 작성
+          editor(
+            :options="editorOptions",
+            initialEditType="wysiwyg",
+            ref="toastuiEditor"
+          )
+    .modal-card-foot
+      .field
+        span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
+        .control
+          button.button.is-link(@click="handleSubmit") 작성
 </template>
 
 <script lang="ts">
@@ -67,10 +67,12 @@ export default class NewComment extends Vue {
       "addImageBlobHook",
       async (file: File, callback: Callback): Promise<void> => {
         if (file.size > 10 * 1000000) {
-          store.commit("setErrormodal","업로드할 파일 용량은 10MB까지만 가능합니다.");
+          store.commit(
+            "setErrormodal",
+            "업로드할 파일 용량은 10MB까지만 가능합니다."
+          );
           return;
-        }
-        else {
+        } else {
           const { path } = await postFile(file.name, await this.toBase64(file));
           callback(`https://image.librewiki.net/${path}`);
         }
@@ -86,11 +88,11 @@ export default class NewComment extends Vue {
     this.modalclose();
   }
 
-  get editorOpen() : boolean {
-    return store.state.editorOpen
+  get editorOpen(): boolean {
+    return store.state.editorOpen;
   }
 
-  modalclose() : void {
+  modalclose(): void {
     store.commit("setEditorOpen", false);
   }
 }
@@ -98,16 +100,15 @@ export default class NewComment extends Vue {
 
 <style lang="scss">
 @import "@/assets/style-variables.scss";
-.modal-card-foot
-  .field {
-      width:100%;
-  }
-    .control {
-    text-align:right;
-    }
-    .button:hover {
-      background-color:$primary;
-      color:white;
-      transition: 0.25s;
-    }
+.modal-card-foot .field {
+  width: 100%;
+}
+.control {
+  text-align: right;
+}
+.button:hover {
+  background-color: $primary;
+  color: white;
+  transition: 0.25s;
+}
 </style>
