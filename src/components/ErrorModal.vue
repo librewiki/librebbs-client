@@ -1,7 +1,7 @@
 <template lang="pug">
 .error-modal.modal(
     ref="errormodal",
-    v-bind:class="{ 'is-active': data.isactive }" )
+    v-bind:class="{ 'is-active': `data.isactive` }" )
     .modal-background(@click="modalclose")
     .modal-content#ErrorModal
       span {{ data.errormsg }}
@@ -28,6 +28,7 @@ export default class ErrorModal extends Vue {
 
     modalclose() : void {
         this.data.isactive = false;
+        store.commit("setErrormodal", null);
     }
 }
 </script>

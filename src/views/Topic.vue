@@ -110,10 +110,21 @@ export default class TopicList extends Vue {
       const topicId = parseInt(this.$route.params.topicId);
       const topic = await getTopic(topicId);
       this.topic = topic;
+      this.checkCanWrite(topic);
     } catch (error) {
       store.commit("setError", error);
     } finally {
       this.busy = false;
+    }
+  }
+
+  checkCanWrite(tp : Topic) : void {
+    if (tp.is_closed == true || tp.is_suspended == true || tp.is_hidden == true ) {
+      store.commit("setCanWrite", false);
+      console.log(tp.is_closed);
+    }
+    else {
+      store.commit("setCanWrite", true);
     }
   }
 

@@ -13,6 +13,7 @@
                 .level-item
                   router-link(:to="`/${board.name}`")
                     h1.title {{ title }}
+              tools
               //- .level-right(v-if="meta.toolBox")
               //-   .level-item
               //-     tool-box
@@ -35,7 +36,7 @@ import ErrorPage from "@/components/ErrorPage.vue";
 import ErrorModal from "@/components/ErrorModal.vue";
 import FooterContent from "@/components/FooterContent.vue";
 import SiteNotice from "@/components/SiteNotice.vue";
-
+import Tools from "@/components/Tools.vue";
 
 @Component({
   components: {
@@ -45,6 +46,7 @@ import SiteNotice from "@/components/SiteNotice.vue";
     ErrorModal,
     FooterContent,
     SiteNotice,
+    Tools,
   },
 })
 export default class App extends Vue {

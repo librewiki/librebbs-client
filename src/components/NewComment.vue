@@ -1,17 +1,23 @@
 <template lang="pug">
-.new-topic
-  .field
-    label.label#label_newtopic 새 의견 추가하기
-  .field
-    editor(
-      :options="editorOptions",
-      initialEditType="wysiwyg",
-      ref="toastuiEditor"
-    )
-  .field
-    span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
-    .control
-      button.button.is-link(@click="handleSubmit") 작성
+.modal(v-bind:class="{ 'is-active': editorOpen }")
+  .modal-background
+  .modal-card
+      .modal-card-head
+        label.modal-card-title#label_newtopic 새 의견 추가하기
+        button.delete(@click="modalclose")
+      .modal-card-body
+        .new-topic
+          .field
+            editor(
+              :options="editorOptions",
+              initialEditType="wysiwyg",
+              ref="toastuiEditor"
+            )
+      .modal-card-foot
+        .field
+          span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
+          .control
+            button.button.is-link(@click="handleSubmit") 작성
 </template>
 
 <script lang="ts">
@@ -78,22 +84,29 @@ export default class NewComment extends Vue {
     this.$refs.toastuiEditor.invoke("reset");
     this.refresh();
   }
+
+  get editorOpen() : boolean {
+    return store.state.editorOpen
+  }
+
+  modalclose() : void {
+    store.commit("setEditorOpen", false);
+  }
 }
 </script>
 
 <style lang="scss">
 @import "@/assets/style-variables.scss";
-.new-topic 
-  #label_newtopic {
-    font-size: 1.25rem;
-    padding-left: 0.5rem;
+.modal-card-foot
+  .field {
+      width:100%;
   }
-  .control {
-  text-align:right;
-  }
-  .button:hover {
-    background-color:$primary;
-    color:white;
-    transition: 0.25s;
-  }
+    .control {
+    text-align:right;
+    }
+    .button:hover {
+      background-color:$primary;
+      color:white;
+      transition: 0.25s;
+    }
 </style>

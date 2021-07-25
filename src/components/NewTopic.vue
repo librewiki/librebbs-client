@@ -1,19 +1,26 @@
 <template lang="pug">
-.new-topic
-  .field
-    label.label 새 주제
-    .control
-      input.input(type="text", placeholder="제목", v-model="title")
-  .field
-    editor(
-      :options="editorOptions",
-      initialEditType="wysiwyg",
-      ref="toastuiEditor"
-    )
-  .field
-    span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
-    .control
-      button.button.is-link(@click="handleSubmit") 작성
+.modal(v-bind:class="{ 'is-active': editorOpen }")
+  .modal-background
+  .modal-card
+    .modal-card-head
+      label.modal-card-title 새 주제
+      button.delete(@click="modalclose")
+    .modal-card-body
+      .new-topic
+        .field
+          .control
+            input.input(type="text", placeholder="제목", v-model="title")
+        .field
+          editor(
+            :options="editorOptions",
+            initialEditType="wysiwyg",
+            ref="toastuiEditor"
+          )
+    .modal-card-foot
+      .field
+        span(v-if="!user.isLoggedIn") ⚠️현재 로그인되어 있지 않습니다. 글 작성 시 IP가 노출됩니다.
+        .control
+          button.button.is-link(@click="handleSubmit") 작성
 </template>
 
 <script lang="ts">
@@ -83,20 +90,31 @@ export default class NewTopic extends Vue {
     const topic = await postTopic(this.board.id, this.title, markdown);
     this.$router.push(`/${this.board.name}/${topic.id}`);
   }
+
+  get editorOpen() : boolean {
+    return store.state.editorOpen
+  }
+
+  modalclose() : void {
+    store.commit("setEditorOpen", false);
+  }
 }
 </script>
 
 <style lang="scss">
 @import "@/assets/style-variables.scss";
-.new-topic 
-  .control {
-  text-align:right;
+.modal-card-foot
+  .field {
+    width:100%;
   }
-  .button:hover {
-    background-color:$primary;
-    color:white;
-    transition: 0.25s;
-  }
+    .control {
+    text-align:right;
+    }
+    .button:hover {
+      background-color:$primary;
+      color:white;
+      transition: 0.25s;
+    }
 
 
 </style>

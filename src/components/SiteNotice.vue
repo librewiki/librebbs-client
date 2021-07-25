@@ -74,6 +74,7 @@ export default class SiteNotice extends Vue {
 }
     .mw-parser-output {
         font-size:1rem;
+        color: #31708f;
     }
 
 </style>

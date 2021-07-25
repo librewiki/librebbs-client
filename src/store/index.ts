@@ -18,6 +18,9 @@ interface State {
     username: string;
   };
   modalError : Error | null;
+  canWrite : boolean;
+  editorOpen : boolean;
+
 }
 
 const storeOptions: StoreOptions<State> = {
@@ -41,6 +44,8 @@ const storeOptions: StoreOptions<State> = {
       username: "",
     },
     modalError: null,
+    canWrite: false,
+    editorOpen: false,
   },
   mutations: {
     setBoard(state, board: Board) {
@@ -51,6 +56,12 @@ const storeOptions: StoreOptions<State> = {
     },
     setErrormodal(state, error: Error) {
       state.modalError = error;
+    },
+    setEditorOpen(state, newState: boolean) {
+      state.editorOpen = newState;
+    },
+    setCanWrite(state, newState: boolean) {
+      state.canWrite = newState;
     },
     updateUserInfo(state, newState: State["user"]) {
       state.user = newState;
