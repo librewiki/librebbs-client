@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Gravatar from "vue-gravatar";
 import InfiniteLoading, { StateChanger } from "vue-infinite-loading";
 import { getTopics } from "@/api";
@@ -56,6 +56,12 @@ export default class TopicList extends Vue {
 
   decodeTitle(x: string): string {
     return AllHtmlEntities.decode(x);
+  }
+
+  @Watch("$route.params")
+  resetInfinite() {
+    this.infiniteId = +new Date();
+    this.topics = [];
   }
 
   async handleInfinite($state: StateChanger): Promise<void> {
