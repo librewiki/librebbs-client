@@ -3,7 +3,7 @@ nav.liberty-navbar.navbar
   .container
     .navbar-menu.is-active
       .navbar-start
-        router-link.navbar-item(active-class="", to="https://librewiki.net")
+        a.navbar-item(active-class="", href="https://librewiki.net")
           img(alt="Logo", src="../assets/logo.png")
           | {{ settings.data.wikiName }}
         a.navbar-item(
@@ -36,16 +36,20 @@ nav.liberty-navbar.navbar
           b-dropdown-item(has-link, v-if="user.isAdmin")
             router-link(to="/admin") 관리자 도구
           b-dropdown-item(has-link)
-            router-link(to="/upload") 파일 업로드
+            a(:href="`https://librewiki.net/${encodeURIComponent('특수:올리기')}`") 파일 업로드
         b-dropdown
           a.navbar-item(slot="trigger")
             b-icon(icon="question")
             span.navbar-text 도움말
             b-icon.navbar-caret(icon="caret-down")
           b-dropdown-item(has-link)
-            router-link(:to="`/article/${encodeURIComponent('문법 도움말')}`") 문법 도움말
+            a(
+              :href="`https://librewiki.net/${encodeURIComponent('도움말:문법 도움말')}`"
+            ) 문법 도움말
           b-dropdown-item(has-link)
-            router-link(:to="`/article/${encodeURIComponent('TeX 문법')}`") TeX 문법
+            a(
+              :href="`https://librewiki.net/${encodeURIComponent('도움말:Tex 문법')}`"
+            ) TeX 문법
       .user-items(v-if="user.isInitialized")
         a.navbar-item(v-if="!user.isLoggedIn", @click="login")
           b-icon(pack="fa", icon="sign-in")
@@ -54,12 +58,14 @@ nav.liberty-navbar.navbar
             a.navbar-item.user-gravatar-wrapper(slot="trigger")
               gravatar.user-gravatar(:email="user.email")
             b-dropdown-item(has-link)
-              router-link(
-                :to="`/article/${encodeURIComponent('사용자:' + user.username)}`"
+              a(
+                :href="`https://librewiki.net/${encodeURIComponent('사용자:' + user.username)}`"
               ) 사용자:{{ user.username }}
             hr.dropdown-divider
             b-dropdown-item(has-link)
-              router-link(to="/user-settings") 사용자 설정
+              a(
+                :href="`https://librewiki.net/${encodeURIComponent('특수:환경설정')}`"
+              ) 환경설정
             hr.dropdown-divider
             b-dropdown-item(has-link)
               a.navbar-item(@click="logout") 로그아웃
