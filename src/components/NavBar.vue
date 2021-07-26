@@ -3,7 +3,7 @@ nav.liberty-navbar.navbar
   .container
     .navbar-menu.is-active
       .navbar-start
-        router-link.navbar-item(active-class="", to="/")
+        router-link.navbar-item(active-class="", to="https://librewiki.net")
           img(alt="Logo", src="../assets/logo.png")
           | {{ settings.data.wikiName }}
         a.navbar-item(
