@@ -10,12 +10,24 @@ nav.liberty-navbar.navbar
           href=`https://librewiki.net/wiki/${encodeURIComponent('특수:최근바뀜')}`
         )
           b-icon(icon="sync")
-          span.navbar-text 최근바뀜
+          span.navbar-text 최근 바뀜
         a.navbar-item(
           href=`https://librewiki.net/wiki/${encodeURIComponent('특수:임의문서')}`
         )
           b-icon(icon="random")
-          span.navbar-text 임의문서
+          span.navbar-text 임의 문서
+        a.navbar-item(href="https://maps.librewiki.net")
+          b-icon(icon="map")
+          span.navbar-text 맵스
+        b-dropdown
+          a.navbar-item(slot="trigger")
+            b-icon(icon="comments")
+            span.navbar-text 게시판
+            b-icon.navbar-caret(icon="caret-down")
+          b-dropdown-item(has-link)
+            router-link(to="/wiki") 위키방
+          b-dropdown-item(has-link)
+            router-link(to="/freeboard") 자유게시판
         b-dropdown
           a.navbar-item(slot="trigger")
             b-icon(icon="wrench")
