@@ -3,26 +3,17 @@
   .topic.box.level
     router-link(:to="`/${board.name}/${topic.id}`")
       h3.title.topic-title {{ decodeTitle(topic.title) }}
-    .admin-tools.dropdown.is-right(
-      v-if="user.isAdmin",
-      v-bind:class="{ 'is-active': adminDropdown }"
-    )
-      .dropdown-trigger
-        button.button.is-small(
-          @click="adminDropdownToggle",
-          v-on:blur="adminDropdownToggle"
-        ) 관리자 메뉴
-      .dropdown-menu
-        .dropdown-content
-          .dropdown-item.admin-button(@click="unhide", v-if="topic.is_hidden") 숨김 해제
-          .dropdown-item.admin-button(@click="hide", v-else) 숨기기
-          .dropdown-item.admin-button(
-            @click="unsuspend",
-            v-if="topic.is_suspended"
-          ) 잠금 해제
-          .dropdown-item.admin-button(@click="suspend", v-else) 잠그기
-          .dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
-          .dropdown-item.admin-button(@click="close", v-else) 종료
+    b-dropdown.admin-tools.is-right(v-if="user.isAdmin")
+      button.button.is-small(slot="trigger") 관리자 메뉴
+      b-dropdown-item.admin-button(@click="unhide", v-if="topic.is_hidden") 숨김 해제
+      b-dropdown-item.admin-button(@click="hide", v-else) 숨기기
+      b-dropdown-item.admin-button(
+        @click="unsuspend",
+        v-if="topic.is_suspended"
+      ) 잠금 해제
+      b-dropdown-item.admin-button(@click="suspend", v-else) 잠그기
+      b-dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
+      b-dropdown-item.admin-button(@click="close", v-else) 종료
 
   topic-comment-card.topic-content-card(
     v-for="(comment, index) in comments",
@@ -81,7 +72,6 @@ export default class TopicList extends Vue {
   comments: Comment[] = [];
   busy = false;
   infiniteId = +new Date();
-  adminDropdown = false;
 
   get user(): typeof store.state.user {
     return store.state.user;
@@ -175,14 +165,6 @@ export default class TopicList extends Vue {
   async unclose(): Promise<void> {
     await uncloseTopic(this.topic.id);
     await this.fetchData();
-  }
-
-  adminDropdownToggle(): void {
-    if (this.adminDropdown == true) {
-      this.adminDropdown = false;
-    } else {
-      this.adminDropdown = true;
-    }
   }
 }
 </script>

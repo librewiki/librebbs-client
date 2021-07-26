@@ -7,19 +7,14 @@
       a.comment-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name )}`") (토론)
     .topic-comment-tools
       .topic-comment-date {{ $moment(comment.created_at).add(9,'hour').format('LLLL') }}
-      .admin-tools.dropdown.is-right(
-        v-if="user.isAdmin",
-        v-bind:class="{ 'is-active': adminDropdown }")
-        .dropdown-trigger
-          button.button.is-small(@click="adminDropdownToggle",v-on:blur="adminDropdownToggle")
+      b-dropdown.admin-tools.is-right(v-if="user.isAdmin")
+          button.button.is-small(slot="trigger")
             b-icon(icon="angle-down")
-        .dropdown-menu
-          .dropdown-content
-            template(v-if="comment.is_hidden")
-              .dropdown-item.admin-button(@click="unhide") 숨기기 취소
-              .dropdown-item.admin-button(@click="showHidden") 보기
-            .dropdown-item.admin-button(@click="hide" v-else) 숨기기
-            a.dropdown-item.admin-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
+          template(v-if="comment.is_hidden")
+            b-dropdown-item.admin-button(@click="unhide") 숨기기 취소
+            b-dropdown-item.admin-button(@click="showHidden") 보기
+          b-dropdown-item.admin-button(@click="hide" v-else) 숨기기
+          b-dropdown-item.admin-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
       
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
     viewer(:initialValue="comment.content" v-if="comment.content")
@@ -41,7 +36,6 @@ import { Viewer } from "@toast-ui/vue-editor";
 })
 export default class TopicContentCard extends Vue {
   @Prop() comment!: Comment;
-  adminDropdown = false;
 
   get user(): typeof store.state.user {
     return store.state.user;
@@ -60,13 +54,6 @@ export default class TopicContentCard extends Vue {
   async showHidden() {
     const data = await getComment(this.comment.id, true);
     this.$emit("update:comment", data);
-  }
-  adminDropdownToggle(): void {
-    if (this.adminDropdown == true) {
-      this.adminDropdown = false;
-    } else {
-      this.adminDropdown = true;
-    }
   }
 }
 </script>

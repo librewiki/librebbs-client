@@ -36,7 +36,7 @@ nav.liberty-navbar.navbar
           b-dropdown-item(has-link, v-if="user.isAdmin")
             router-link(to="/admin") 관리자 도구
           b-dropdown-item(has-link)
-            a(:href="`https://librewiki.net/${encodeURIComponent('특수:올리기')}`") 파일 업로드
+            a(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:올리기')}`") 파일 업로드
         b-dropdown
           a.navbar-item(slot="trigger")
             b-icon(icon="question")
@@ -44,11 +44,11 @@ nav.liberty-navbar.navbar
             b-icon.navbar-caret(icon="caret-down")
           b-dropdown-item(has-link)
             a(
-              :href="`https://librewiki.net/${encodeURIComponent('도움말:문법 도움말')}`"
+              :href="`https://librewiki.net/wiki/${encodeURIComponent('도움말:문법 도움말')}`"
             ) 문법 도움말
           b-dropdown-item(has-link)
             a(
-              :href="`https://librewiki.net/${encodeURIComponent('도움말:Tex 문법')}`"
+              :href="`https://librewiki.net/wiki/${encodeURIComponent('도움말:Tex 문법')}`"
             ) TeX 문법
       .user-items(v-if="user.isInitialized")
         a.navbar-item(v-if="!user.isLoggedIn", @click="login")
@@ -59,12 +59,12 @@ nav.liberty-navbar.navbar
               gravatar.user-gravatar(:email="user.email")
             b-dropdown-item(has-link)
               a(
-                :href="`https://librewiki.net/${encodeURIComponent('사용자:' + user.username)}`"
+                :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + user.username)}`"
               ) 사용자:{{ user.username }}
             hr.dropdown-divider
             b-dropdown-item(has-link)
               a(
-                :href="`https://librewiki.net/${encodeURIComponent('특수:환경설정')}`"
+                :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:환경설정')}`"
               ) 환경설정
             hr.dropdown-divider
             b-dropdown-item(has-link)
