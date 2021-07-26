@@ -107,6 +107,11 @@ a.external {
       margin-top: ($navbar-height * 2 + 0.333rem);
     }
   }
+  @media screen and (min-width: 1408px) {
+    .container:not(.is-max-desktop):not(.is-max-widescreen) {
+      max-width: 1200px;
+    }
+  }
   .main-columns {
     @include touch {
       margin-left: 0;
