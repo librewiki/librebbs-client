@@ -1,0 +1,34 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: npm ci --no-audit
+
+      - run: |
+          ${env | grep VUE_APP_CLIENT_ID} > .env.local
+          ${env | grep VUE_APP_BACKEND_HOST} >> .env.local
+        env: 
+          VUE_APP_CLIENT_ID: ${{ secrets.VUE_APP_CLIENT_ID }}
+          VUE_APP_BACKEND_HOST: ${{ secrets.VUE_APP_BACKEND_HOST }}
+
+      - run: npm run build
+
+      - uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
+          clean: false
+          single-commit: false
+          token: ${{ github.token }}
+          git-config-name: "github-actions[bot]"
+          git-config-email: "41898282+github-actions[bot]@users.noreply.github.com"
