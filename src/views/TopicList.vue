@@ -12,7 +12,7 @@
               a.topic-author-link(
                 :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
               ) (토론)
-          router-link.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).add(9, 'hour').endOf('minute').fromNow() + '에 업데이트됨' }}
+          router-link.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).add(9, 'hour').fromNow() + '에 업데이트됨' }}
         router-link(:to="`/${board.name}/${topic.id}`")
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
@@ -57,7 +57,7 @@ export default class TopicList extends Vue {
   }
 
   @Watch("$route.params")
-  resetInfinite() {
+  resetInfinite(): void {
     this.infiniteId = +new Date();
     this.topics = [];
   }
@@ -112,7 +112,7 @@ export default class TopicList extends Vue {
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: 1px solid #e1e8ed;
   border-radius: 0.25rem;
-  margin: 2px 2px 2rem 2px;
+  margin: 2px 2px 5px 2px;
 }
 .topic-card:hover {
   box-shadow: 0 0 3px 1px;
