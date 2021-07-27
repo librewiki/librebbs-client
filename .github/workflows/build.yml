@@ -15,8 +15,8 @@ jobs:
       - run: npm ci --no-audit
 
       - run: |
-          ${env | grep VUE_APP_CLIENT_ID} > .env.local
-          ${env | grep VUE_APP_BACKEND_HOST} >> .env.local
+          $(env | grep VUE_APP_CLIENT_ID) > .env.local
+          $(env | grep VUE_APP_BACKEND_HOST) >> .env.local
         env: 
           VUE_APP_CLIENT_ID: ${{ secrets.VUE_APP_CLIENT_ID }}
           VUE_APP_BACKEND_HOST: ${{ secrets.VUE_APP_BACKEND_HOST }}
