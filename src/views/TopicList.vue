@@ -3,23 +3,19 @@
   ul
     li(v-for="topic in topics")
       .card.topic-card
-        .card-body
-          span.topic-author
-            a(
-              :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
-            ) {{ topic.author_name }}
-            a.topic-author-link(
-              :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
-            ) (토론) -
-          span.topic-updated_at {{ $moment(topic.updated_at).add(9, 'hour').endOf('minute').fromNow() + '에 업데이트됨' }}
-          hr
-          .topic-name
-            router-link(:to="`/${board.name}/${topic.id}`") {{ decodeTitle(topic.title) }}
-        .topic-author-img
-          gravatar.user-gravatar(
-            :hash="genGravataHash(topic)",
-            default-img="identicon"
-          )
+        .topic-card-header
+          .topic-author-area
+            span.topic-author
+              a(
+                :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
+              ) {{ topic.author_name }}
+              a.topic-author-link(
+                :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
+              ) (토론)
+          router-link.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).add(9, 'hour').endOf('minute').fromNow() + '에 업데이트됨' }}
+        router-link(:to="`/${board.name}/${topic.id}`")
+          .card-body
+            .topic-name {{ decodeTitle(topic.title) }}
   infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
@@ -100,28 +96,29 @@ export default class TopicList extends Vue {
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: 1px solid #e1e8ed;
   border-radius: 0.25rem;
-  margin-bottom: 2rem;
+  margin: 2px 2px 2rem 2px;
+}
+.topic-card:hover {
+  box-shadow: 0 0 3px 1px;
+}
+.topic-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 .card-body {
-  max-width: 80%;
-  min-height: 80px;
-  flex: 1;
+  width: 100%;
+  color: #4a4a4a;
 }
 .topic-updated_at {
   font-size: 0.8rem;
+  flex: 99;
+  text-align: right;
+  color: #4a4a4a;
 }
 .topic-author-link {
   font-size: 0.75rem;
   margin-left: 0.25rem;
-}
-.topic-author-img {
-  max-width: 80px;
-  width: auto;
-  height: 80px;
-  flex: 1;
+  z-index: 3;
 }
 @media (max-width: 400px) {
   .topic-card {
