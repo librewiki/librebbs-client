@@ -21,7 +21,9 @@ jobs:
           VUE_APP_CLIENT_ID: ${{ secrets.VUE_APP_CLIENT_ID }}
           VUE_APP_BACKEND_HOST: ${{ secrets.VUE_APP_BACKEND_HOST }}
 
-      - run: npm run build
+      - run: |
+          npm run build
+          cp dist/index.html dist/404.html
 
       - uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
