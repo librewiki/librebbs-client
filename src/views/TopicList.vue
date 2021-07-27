@@ -16,6 +16,8 @@
         router-link(:to="`/${board.name}/${topic.id}`")
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
+            .topic-islocked(v-if="topic.is_closed || topic.is_suspended")
+              b-icon(icon="lock")
   infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
@@ -87,6 +89,20 @@ export default class TopicList extends Vue {
       store.commit("setCanWrite", true);
     }
   }
+
+  checkCanWrite(tp: Topic): boolean {
+    if (
+      tp.is_closed == true ||
+      tp.is_suspended == true ||
+      tp.is_hidden == true ||
+      store.state.user.isBlocked == true
+    ) {
+      console.log("아아아");
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 </script>
 
@@ -108,6 +124,8 @@ export default class TopicList extends Vue {
 .card-body {
   width: 100%;
   color: #4a4a4a;
+  display: flex;
+  justify-content: space-between;
 }
 .topic-updated_at {
   font-size: 0.8rem;
