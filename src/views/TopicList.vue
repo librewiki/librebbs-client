@@ -106,7 +106,6 @@ export default class TopicListPage extends Vue {
       tp.is_hidden == true ||
       store.state.user.isBlocked == true
     ) {
-      console.log("아아아");
       return false;
     } else {
       return true;

@@ -184,7 +184,6 @@ export default class NavBar extends Vue {
         }
       );
       this.autoCompleteItem = [];
-      console.log(data);
       data.query.search.forEach((item) =>
         this.autoCompleteItem.push(item.title)
       );
