@@ -36,7 +36,9 @@ nav.liberty-navbar.navbar
           b-dropdown-item(has-link, v-if="user.isAdmin")
             router-link(to="/admin") 관리자 도구
           b-dropdown-item(has-link)
-            a(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:올리기')}`") 파일 업로드
+            a(
+              :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:올리기')}`"
+            ) 파일 업로드
         b-dropdown
           a.navbar-item(slot="trigger")
             b-icon(icon="question")
@@ -74,12 +76,15 @@ nav.liberty-navbar.navbar
       .navbar-end
         .search-box-wrapper
           b-field
-            b-input.navbar-search-input(
+            b-autocomplete(
               placeholder="검색",
-              type="search",
               icon="search",
               v-model="searchInput",
-              @keyup.enter.native="go"
+              :data="autoCompleteItem",
+              @keyup.enter.native="go",
+              @select="(option) => (selected = option)",
+              v-on:input="getMedaiwikiSearch(searchInput)",
+              max-height="100%"
             )
             p.control
               button.button(active-class="", @click="go")
@@ -94,6 +99,31 @@ import { Component, Vue } from "vue-property-decorator";
 import Gravatar from "vue-gravatar";
 import { startLoginProcess, logout } from "@/auth";
 import store from "@/store";
+import axios from "axios";
+
+interface AutoCompleteResponse {
+  batchcomplete: string;
+  continue: {
+    sroffset: number;
+    continue: string;
+  };
+  query: {
+    searchinfo: {
+      totalhits: number;
+    };
+    search: AutoCompleteResponseItem[];
+  };
+}
+
+interface AutoCompleteResponseItem {
+  ns: number;
+  title: string;
+  pageid: number;
+  size: number;
+  wordcount: number;
+  snippet: string;
+  timestamp: string;
+}
 
 @Component({
   components: {
@@ -107,6 +137,7 @@ export default class NavBar extends Vue {
       wikiname: "리브레 위키",
     },
   };
+  autoCompleteItem = [""];
 
   get user(): typeof store.state.user {
     return store.state.user;
@@ -134,6 +165,32 @@ export default class NavBar extends Vue {
       location.href = `https://librewiki.net/index.php?title=special:search&search=${encodeURIComponent(
         this.searchInput
       )}&fulltext=search`;
+    }
+  }
+
+  async getMedaiwikiSearch(key: string): Promise<void> {
+    try {
+      const { data } = await axios.get<AutoCompleteResponse>(
+        "https://librewiki.net/api.php",
+        {
+          params: {
+            action: "query",
+            list: "search",
+            origin: window.origin,
+            format: "json",
+            srsearch: key,
+            srlimit: 10,
+          },
+        }
+      );
+      this.autoCompleteItem = [];
+      console.log(data);
+      data.query.search.forEach((item) =>
+        this.autoCompleteItem.push(item.title)
+      );
+      return;
+    } catch (err) {
+      console.log(err);
     }
   }
 }
@@ -242,6 +299,11 @@ export default class NavBar extends Vue {
   .search-box-wrapper {
     .button:focus {
       box-shadow: none;
+    }
+    .autocomplete .dropdown-item{
+      text-align: left;
+      white-space: pre-line;
+      word-break: break-all;
     }
   }
   .navbar-search-input {
