@@ -65,6 +65,7 @@ interface Topic {
   is_closed: boolean;
   is_suspended: boolean;
   is_hidden: boolean;
+  is_pinned: boolean;
   author_id: null | number;
   author_name: string;
   created_at: string;
@@ -141,6 +142,20 @@ async function closeTopic(topicId: number): Promise<Topic> {
 async function uncloseTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
     is_closed: false,
+  });
+  return data;
+}
+
+async function pinTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_pinned: true,
+  });
+  return data;
+}
+
+async function unpinTopic(topicId: number): Promise<Topic> {
+  const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
+    is_pinned: false,
   });
   return data;
 }
@@ -239,5 +254,7 @@ export {
   unsuspendTopic,
   closeTopic,
   uncloseTopic,
+  pinTopic,
+  unpinTopic,
 };
 export type { UserInfo, Board, Topic, Comment };

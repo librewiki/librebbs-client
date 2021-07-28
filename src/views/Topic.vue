@@ -14,6 +14,8 @@
       b-dropdown-item.admin-button(@click="suspend", v-else) 잠그기
       b-dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
       b-dropdown-item.admin-button(@click="close", v-else) 종료
+      b-dropdown-item.admin-button(@click="unpin" v-if="topic.is_pinned") 상단 고정 해제
+      b-dropdown-item.admin-button(@click="pin" v-else) 상단 고정
 
   topic-comment-card.topic-content-card(
     v-for="(comment, index) in comments",
@@ -42,6 +44,8 @@ import {
   unsuspendTopic,
   closeTopic,
   uncloseTopic,
+  pinTopic,
+  unpinTopic,
 } from "@/api";
 import type { Topic, Comment, Board } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
@@ -64,6 +68,7 @@ export default class TopicList extends Vue {
     is_closed: false,
     is_suspended: false,
     is_hidden: false,
+    is_pinned: false,
     author_id: 0,
     author_name: "",
     created_at: "",
@@ -164,6 +169,16 @@ export default class TopicList extends Vue {
 
   async unclose(): Promise<void> {
     await uncloseTopic(this.topic.id);
+    await this.fetchData();
+  }
+
+  async pin(): Promise<void> {
+    await pinTopic(this.topic.id);
+    await this.fetchData();
+  }
+
+  async unpin(): Promise<void> {
+    await unpinTopic(this.topic.id);
     await this.fetchData();
   }
 }

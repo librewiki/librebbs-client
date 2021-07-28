@@ -16,8 +16,11 @@
         router-link(:to="`/${board.name}/${topic.id}`")
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
-            .topic-islocked(v-if="topic.is_closed || topic.is_suspended")
-              b-icon(icon="lock")
+            .topic-icons
+              span.topic-islocked(v-if="topic.is_closed || topic.is_suspended")
+                b-icon(icon="lock")
+              span.topic-ispinned(v-if="topic.is_pinned")
+                b-icon(icon="thumbtack")
   infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
