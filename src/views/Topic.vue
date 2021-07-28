@@ -52,6 +52,7 @@ import TopicCommentCard from "@/components/TopicCommentCard.vue";
 import NewComment from "@/components/NewComment.vue";
 import store from "@/store";
 import { AllHtmlEntities } from "html-entities";
+import type { MetaInfo } from "vue-meta";
 
 @Component({
   components: {
@@ -59,8 +60,17 @@ import { AllHtmlEntities } from "html-entities";
     NewComment,
     InfiniteLoading,
   },
+  metaInfo(): MetaInfo {
+    const boardName = (this as TopicPage).board.display_name;
+    const topicTitle = (this as TopicPage).decodeTitle(
+      (this as TopicPage).topic.title
+    );
+    return {
+      title: `${topicTitle} - ${boardName}`,
+    };
+  },
 })
-export default class TopicList extends Vue {
+export default class TopicPage extends Vue {
   topic: Topic = {
     id: 0,
     board_id: 0,

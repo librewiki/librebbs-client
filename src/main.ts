@@ -7,20 +7,14 @@ import store from "./store";
 import "./buefy";
 Vue.config.productionTip = false;
 import moment from "moment";
+import VueMeta from "vue-meta";
 
 moment.locale("ko");
 Vue.prototype.$moment = moment;
+Vue.use(VueMeta);
 
 new Vue({
   router,
   store,
   render: (h) => h(App),
 }).$mount("#app");
-
-// declare global {
-//   interface Window {
-//     axios: any;
-//   }
-// }
-// import axios from "axios";
-// window.axios = axios;

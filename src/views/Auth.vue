@@ -5,9 +5,17 @@
 import { Component, Vue } from "vue-property-decorator";
 import { getToken } from "@/auth";
 import store from "@/store";
+import type { MetaInfo } from "vue-meta";
 
-@Component({ name: "Auth" })
-export default class Auth extends Vue {
+@Component({
+  name: "Auth",
+  metaInfo(): MetaInfo {
+    return {
+      title: "로그인",
+    };
+  },
+})
+export default class AuthPage extends Vue {
   error = "";
 
   async beforeMount(): Promise<void> {

@@ -38,6 +38,7 @@ import NewTopic from "@/components/NewTopic.vue";
 import store from "@/store";
 import md5 from "md5";
 import { AllHtmlEntities } from "html-entities";
+import type { MetaInfo } from "vue-meta";
 
 @Component({
   components: {
@@ -45,8 +46,13 @@ import { AllHtmlEntities } from "html-entities";
     InfiniteLoading,
     Gravatar,
   },
+  metaInfo(): MetaInfo {
+    return {
+      title: (this as TopicListPage).board.display_name,
+    };
+  },
 })
-export default class TopicList extends Vue {
+export default class TopicListPage extends Vue {
   topics: Topic[] = [];
   busy = false;
   infiniteId = +new Date();
