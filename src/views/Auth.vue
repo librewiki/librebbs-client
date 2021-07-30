@@ -29,12 +29,12 @@ export default class AuthPage extends Vue {
       this.error = "로그인 중 에러가 발생했습니다.";
       return;
     }
-    store.dispatch("fetchUserInfo");
     if (typeof this.$route.query.state === "string") {
       this.$router.replace(this.$route.query.state);
     } else {
       this.$router.replace("/");
     }
+    store.dispatch("fetchUserInfo");
   }
 }
 </script>
