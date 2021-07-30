@@ -132,6 +132,10 @@ export default class TopicPage extends Vue {
       const topic = await getTopic(topicId);
       this.topic = topic;
       this.checkCanWrite(topic);
+      localStorage.setItem(
+        `topic-last-visited.${topic.id}`,
+        new Date().toISOString()
+      );
     } catch (error) {
       store.commit("setError", error);
     } finally {

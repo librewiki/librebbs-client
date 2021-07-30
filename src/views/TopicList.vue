@@ -17,9 +17,13 @@
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
             .topic-icons
-              span.topic-islocked(v-if="topic.is_closed || topic.is_suspended")
+              b-tooltip(label="마지막 방문 이후에 바뀜").topic-isupdated(v-if="isUpdated(topic)")
+                b-icon(icon="exclamation")
+              b-tooltip(label="종료됨").topic-islocked(v-if="topic.is_closed")
                 b-icon(icon="lock")
-              span.topic-ispinned(v-if="topic.is_pinned")
+              b-tooltip(label="중단됨").topic-islocked(v-else-if="topic.is_suspended")
+                b-icon(icon="lock")
+              b-tooltip(label="상단 고정됨").topic-ispinned(v-if="topic.is_pinned")
                 b-icon(icon="thumbtack")
   infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
@@ -39,6 +43,7 @@ import store from "@/store";
 import md5 from "md5";
 import { AllHtmlEntities } from "html-entities";
 import type { MetaInfo } from "vue-meta";
+import moment from "moment";
 
 @Component({
   components: {
@@ -82,6 +87,24 @@ export default class TopicListPage extends Vue {
       $state.complete();
     } else {
       $state.loaded();
+    }
+  }
+
+  isUpdated(topic: Topic): boolean {
+    const lastVisited = this.lastVisited(topic.id);
+    return (
+      !!lastVisited &&
+      moment(topic.updated_at).add(9, "hour").isAfter(lastVisited)
+    );
+  }
+
+  lastVisited(id: number): Date | null {
+    const item = localStorage.getItem(`topic-last-visited.${id}`);
+
+    if (item) {
+      return new Date(item);
+    } else {
+      return null;
     }
   }
 
