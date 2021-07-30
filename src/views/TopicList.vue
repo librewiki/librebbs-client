@@ -12,18 +12,18 @@
               a.topic-author-link(
                 :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
               ) (토론)
-          router-link.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).add(9, 'hour').fromNow() + '에 업데이트됨' }}
+          router-link.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).fromNow() + '에 업데이트됨' }}
         router-link(:to="`/${board.name}/${topic.id}`")
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
             .topic-icons
-              b-tooltip(label="마지막 방문 이후에 바뀜").topic-isupdated(v-if="isUpdated(topic)")
+              b-tooltip.topic-isupdated(label="마지막 방문 이후에 바뀜" v-if="isUpdated(topic)")
                 b-icon(icon="exclamation")
-              b-tooltip(label="종료됨").topic-islocked(v-if="topic.is_closed")
+              b-tooltip.topic-islocked(label="종료됨" v-if="topic.is_closed")
                 b-icon(icon="lock")
-              b-tooltip(label="중단됨").topic-islocked(v-else-if="topic.is_suspended")
+              b-tooltip.topic-islocked(label="중단됨" v-else-if="topic.is_suspended")
                 b-icon(icon="lock")
-              b-tooltip(label="상단 고정됨").topic-ispinned(v-if="topic.is_pinned")
+              b-tooltip.topic-ispinned(label="상단 고정됨" v-if="topic.is_pinned")
                 b-icon(icon="thumbtack")
   infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
@@ -92,10 +92,7 @@ export default class TopicListPage extends Vue {
 
   isUpdated(topic: Topic): boolean {
     const lastVisited = this.lastVisited(topic.id);
-    return (
-      !!lastVisited &&
-      moment(topic.updated_at).add(9, "hour").isAfter(lastVisited)
-    );
+    return !!lastVisited && moment(topic.updated_at).isAfter(lastVisited);
   }
 
   lastVisited(id: number): Date | null {

@@ -6,7 +6,7 @@
         .topic-comment-author {{ comment.author_name }}
       a.comment-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name )}`") (토론)
     .topic-comment-tools
-      .topic-comment-date {{ $moment(comment.created_at).add(9,'hour').format('LLLL') }}
+      .topic-comment-date {{ $moment(comment.created_at).format('LLLL') }}
       b-dropdown.admin-tools.is-right(v-if="user.isAdmin")
           button.button.is-small(slot="trigger")
             b-icon(icon="angle-down")
@@ -79,11 +79,11 @@ export default class TopicContentCard extends Vue {
     justify-content: flex-end;
   }
   .comment-author-link {
-    margin-left:0.5rem;
-    font-size:0.8rem;
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
   }
   .topic-comment-date {
-    margin-right:1rem;
+    margin-right: 1rem;
   }
   .topic-comment-admin {
     margin-left: 1rem;
