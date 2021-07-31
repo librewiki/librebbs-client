@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.20b58dd0d8050131283fdf2072f629c5.js"
+  "/precache-manifest.a9abcdc9582188a1960773a0c156dc35.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "librebbs-client"});
