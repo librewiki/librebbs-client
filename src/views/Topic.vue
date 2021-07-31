@@ -51,7 +51,7 @@ import type { Topic, Comment, Board } from "@/api";
 import TopicCommentCard from "@/components/TopicCommentCard.vue";
 import NewComment from "@/components/NewComment.vue";
 import store from "@/store";
-import { AllHtmlEntities } from "html-entities";
+import { decode } from "html-entities";
 import type { MetaInfo } from "vue-meta";
 
 @Component({
@@ -97,7 +97,7 @@ export default class TopicPage extends Vue {
   }
 
   decodeTitle(x: string): string {
-    return AllHtmlEntities.decode(x);
+    return decode(x);
   }
 
   refresh(): void {

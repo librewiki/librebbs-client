@@ -51,7 +51,7 @@ import type { Topic, Board } from "@/api";
 import NewTopic from "@/components/NewTopic.vue";
 import store from "@/store";
 import md5 from "md5";
-import { AllHtmlEntities } from "html-entities";
+import { decode } from "html-entities";
 import type { MetaInfo } from "vue-meta";
 import moment from "moment";
 
@@ -77,7 +77,7 @@ export default class TopicListPage extends Vue {
   }
 
   decodeTitle(x: string): string {
-    return AllHtmlEntities.decode(x);
+    return decode(x);
   }
 
   @Watch("$route.params")
