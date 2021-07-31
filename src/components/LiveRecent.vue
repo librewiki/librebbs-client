@@ -142,7 +142,7 @@ export default class LiveRecent extends Vue {
   }
   .live-recent-content {
     background-color: white;
-    font-size:0.8rem;
+    font-size: 0.8rem;
   }
   .live-recent-tag {
     color: #b73333;

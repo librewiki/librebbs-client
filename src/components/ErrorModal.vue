@@ -20,7 +20,7 @@ export default class ErrorModal extends Vue {
     errormsg: store.state.modalError,
   };
 
-  mounted() {
+  mounted(): void {
     this.data.isactive = true;
   }
 

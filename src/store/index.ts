@@ -21,7 +21,6 @@ interface State {
   modalError: Error | null;
   canWrite: boolean;
   editorOpen: boolean;
-
 }
 
 const storeOptions: StoreOptions<State> = {
@@ -43,7 +42,7 @@ const storeOptions: StoreOptions<State> = {
       isAdmin: false,
       isBlocked: false,
       email: "",
-      username: ""
+      username: "",
     },
     modalError: null,
     canWrite: false,
