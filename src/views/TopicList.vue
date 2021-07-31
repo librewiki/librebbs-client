@@ -11,10 +11,18 @@
                   @click.stop
                   :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
                 ) {{ topic.author_name }}
-                a.topic-author-link(
-                  @click.stop
-                  :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
-                ) (토론)
+                span.topic-author-link
+                  | (
+                  a(
+                    @click.stop
+                    :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
+                  ) 토론
+                  | |
+                  a(
+                    @click.stop
+                    :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + topic.author_name)}`"
+                  ) 기여
+                  | )
             span.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).fromNow() + '에 업데이트됨' }}
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
