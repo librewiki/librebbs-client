@@ -83,6 +83,10 @@ export default class NewComment extends Vue {
   async handleSubmit(): Promise<void> {
     const markdown = this.$refs.toastuiEditor.invoke("getMarkdown");
     await postComment(this.topicId, markdown);
+    localStorage.setItem(
+      `topic-last-visited.${this.topicId}`,
+      new Date().toISOString()
+    );
     this.$refs.toastuiEditor.invoke("reset");
     this.refresh();
     this.modalclose();
