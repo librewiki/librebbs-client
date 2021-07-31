@@ -34,7 +34,7 @@ nav.panel.live-recent
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
-import moment from "moment";
+import { DateTime } from "luxon";
 
 const documentNamespaces = "0|4|10|12|14|1600";
 const topicNamespaces = "1|3|5|7|9|11|13|15|2600|1601|1063|3604|3605";
@@ -92,12 +92,12 @@ export default class LiveRecent extends Vue {
       );
       this.items = data.query.recentchanges.map(
         (item: RecentChangeResponseItem) => {
-          let timeString;
-          const updateTime = moment(item.timestamp);
-          if (updateTime < moment().subtract(1, "day")) {
-            timeString = updateTime.fromNow();
+          let timeString: string;
+          const updateTime = DateTime.fromISO(item.timestamp);
+          if (updateTime < DateTime.now().minus({ days: 1 })) {
+            timeString = updateTime.toRelative() || "";
           } else {
-            timeString = updateTime.format("HH[:]mm[:]ss");
+            timeString = updateTime.toFormat("HH:mm:ss");
           }
           const isNew = item.type === "new";
           return {

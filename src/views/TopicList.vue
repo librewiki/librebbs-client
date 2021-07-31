@@ -23,7 +23,7 @@
                     :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + topic.author_name)}`"
                   ) 기여
                   | )
-            span.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).fromNow() + '에 업데이트됨' }}
+            span.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ updatedAtString(topic) }}
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
             .topic-icons
@@ -53,7 +53,7 @@ import store from "@/store";
 import md5 from "md5";
 import { decode } from "html-entities";
 import type { MetaInfo } from "vue-meta";
-import moment from "moment";
+import { DateTime } from "luxon";
 
 @Component({
   components: {
@@ -100,16 +100,20 @@ export default class TopicListPage extends Vue {
     }
   }
 
-  isUpdated(topic: Topic): boolean {
-    const lastVisited = this.lastVisited(topic.id);
-    return !!lastVisited && moment(topic.updated_at).isAfter(lastVisited);
+  updatedAtString(topic: Topic): string {
+    return `${DateTime.fromISO(topic.updated_at).toRelative()}에 업데이트됨`;
   }
 
-  lastVisited(id: number): Date | null {
+  isUpdated(topic: Topic): boolean {
+    const lastVisited = this.lastVisited(topic.id);
+    return !!lastVisited && DateTime.fromISO(topic.updated_at) > lastVisited;
+  }
+
+  lastVisited(id: number): DateTime | null {
     const item = localStorage.getItem(`topic-last-visited.${id}`);
 
     if (item) {
-      return new Date(item);
+      return DateTime.fromISO(item);
     } else {
       return null;
     }

@@ -6,7 +6,7 @@
         .topic-comment-author {{ comment.author_name }}
       a.comment-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name )}`") (토론)
     .topic-comment-tools
-      .topic-comment-date {{ $moment(comment.created_at).format('LLLL') }}
+      .topic-comment-date {{ dateString }}
       b-dropdown.admin-tools.is-right(v-if="user.isAdmin")
           button.button.is-small(slot="trigger")
             b-icon(icon="angle-down")
@@ -28,6 +28,7 @@ import type { Comment } from "@/api";
 import store from "@/store";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/vue-editor";
+import { DateTime } from "luxon";
 
 @Component({
   components: {
@@ -39,6 +40,12 @@ export default class TopicContentCard extends Vue {
 
   get user(): typeof store.state.user {
     return store.state.user;
+  }
+
+  get dateString(): string {
+    return DateTime.fromISO(this.comment.created_at).toLocaleString(
+      DateTime.DATETIME_MED
+    );
   }
 
   async hide(): Promise<void> {

@@ -6,11 +6,10 @@ import router from "./router";
 import store from "./store";
 import "./buefy";
 Vue.config.productionTip = false;
-import moment from "moment";
 import VueMeta from "vue-meta";
+import { Settings } from "luxon";
 
-moment.locale("ko");
-Vue.prototype.$moment = moment;
+Settings.defaultLocale = "ko-KR";
 Vue.use(VueMeta);
 
 new Vue({
