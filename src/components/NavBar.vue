@@ -83,7 +83,7 @@ nav.liberty-navbar.navbar
               :data="autoCompleteItem",
               @keyup.enter.native="go",
               @select="(option) => (selected = option)",
-              v-on:input="getMedaiwikiSearch(searchInput)",
+              @input="getMedaiwikiSearch(searchInput)",
               max-height="100%"
             )
             p.control
@@ -299,7 +299,7 @@ export default class NavBar extends Vue {
     .button:focus {
       box-shadow: none;
     }
-    .autocomplete .dropdown-item{
+    .autocomplete .dropdown-item {
       text-align: left;
       white-space: pre-line;
       word-break: break-all;

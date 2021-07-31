@@ -1,7 +1,7 @@
 <template lang="pug">
 .error-modal.modal(
   ref="errormodal",
-  v-bind:class="{ 'is-active': `data.isactive` }"
+  :class="{ 'is-active': `data.isactive` }"
 )
   .modal-background(@click="modalclose")
   #ErrorModal.modal-content

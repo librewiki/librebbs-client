@@ -1,5 +1,5 @@
 <template lang="pug">
-.modal(v-bind:class="{ 'is-active': editorOpen }")
+.modal(:class="{ 'is-active': editorOpen }")
   .modal-background
   .modal-card
     .modal-card-head
