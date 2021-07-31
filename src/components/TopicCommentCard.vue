@@ -41,17 +41,17 @@ export default class TopicContentCard extends Vue {
     return store.state.user;
   }
 
-  async hide() {
+  async hide(): Promise<void> {
     const data = await hideComment(this.comment.id);
     this.$emit("update:comment", data);
   }
 
-  async unhide() {
+  async unhide(): Promise<void> {
     const data = await unhideComment(this.comment.id);
     this.$emit("update:comment", data);
   }
 
-  async showHidden() {
+  async showHidden(): Promise<void> {
     const data = await getComment(this.comment.id, true);
     this.$emit("update:comment", data);
   }
