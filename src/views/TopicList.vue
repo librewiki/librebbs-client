@@ -2,18 +2,20 @@
 .page-topic-list
   ul
     li(v-for="topic in topics")
-      .card.topic-card
-        .topic-card-header
-          .topic-author-area
-            span.topic-author
-              a(
-                :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
-              ) {{ topic.author_name }}
-              a.topic-author-link(
-                :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
-              ) (토론)
-          router-link.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).fromNow() + '에 업데이트됨' }}
-        router-link(:to="`/${board.name}/${topic.id}`")
+      router-link(:to="`/${board.name}/${topic.id}`")
+        .card.topic-card
+          .topic-card-header
+            .topic-author-area
+              span.topic-author
+                a(
+                  @click.stop
+                  :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
+                ) {{ topic.author_name }}
+                a.topic-author-link(
+                  @click.stop
+                  :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
+                ) (토론)
+            span.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ $moment(topic.updated_at).fromNow() + '에 업데이트됨' }}
           .card-body
             .topic-name {{ decodeTitle(topic.title) }}
             .topic-icons
