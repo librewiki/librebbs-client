@@ -4,7 +4,18 @@
     .topic-comment-info
       a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.author_name )}`")
         .topic-comment-author {{ comment.author_name }}
-      a.comment-author-link(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name )}`") (토론)
+      span.comment-author-link
+        | (
+        a(
+          @click.stop
+          :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name)}`"
+        ) 토론
+        | |
+        a(
+          @click.stop
+          :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + comment.author_name)}`"
+        ) 기여
+        | )
     .topic-comment-tools
       .topic-comment-date {{ dateString }}
       b-dropdown.admin-tools.is-right(v-if="user.isAdmin")
