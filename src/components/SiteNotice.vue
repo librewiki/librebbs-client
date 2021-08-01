@@ -1,7 +1,7 @@
 <template lang="pug">
 .liberty-notice(v-if="done")
   .sitenotice
-    viewer(:initialValue="item.text", v-if="item.text")
+    viewer(:initialValue="item.text", v-if="item.text" ref="viewer")
 </template>
 
 <script lang="ts">
@@ -25,6 +25,9 @@ interface SiteNoticeitem {
   },
 })
 export default class SiteNotice extends Vue {
+  $refs!: {
+    viewer: Viewer;
+  };
   done = false;
   item: SiteNoticeitem = {
     title: "",
@@ -49,6 +52,13 @@ export default class SiteNotice extends Vue {
       );
       this.item = data.parse;
       this.done = true;
+      await this.$nextTick();
+      for (const link of this.$refs.viewer.$el.querySelectorAll("a")) {
+        const href = link.attributes.getNamedItem("href");
+        if (href?.value.startsWith("/")) {
+          href.value = `https://librewiki.net/${href.value}`;
+        }
+      }
       return;
     } catch (err) {
       console.log(err);
@@ -65,7 +75,7 @@ export default class SiteNotice extends Vue {
 <style lang="scss">
 @import "@/assets/style-variables.scss";
 .liberty-notice {
-  padding: 0.5rem;
+  padding: 1rem;
   background-color: #d9edf7;
   border-radius: 0.25rem;
   margin-bottom: 1rem;
