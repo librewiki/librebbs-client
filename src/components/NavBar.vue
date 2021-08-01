@@ -290,6 +290,8 @@ export default class NavBar extends Vue {
     }
   }
   .navbar-item {
+    display: flex;
+    align-items: center;
     white-space: nowrap;
   }
   .navbar-end {
@@ -298,6 +300,9 @@ export default class NavBar extends Vue {
   .search-box-wrapper {
     .button:focus {
       box-shadow: none;
+    }
+    .autocomplete {
+      flex-grow: 1;
     }
     .autocomplete .dropdown-item {
       text-align: left;
