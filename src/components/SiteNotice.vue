@@ -56,7 +56,7 @@ export default class SiteNotice extends Vue {
       for (const link of this.$refs.viewer.$el.querySelectorAll("a")) {
         const href = link.attributes.getNamedItem("href");
         if (href?.value.startsWith("/")) {
-          href.value = `https://librewiki.net/${href.value}`;
+          href.value = `https://librewiki.net${href.value}`;
         }
       }
       return;
