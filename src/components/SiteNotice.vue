@@ -1,6 +1,6 @@
 <template lang="pug">
 .liberty-notice(v-if="done")
-  #sitenotice
+  .sitenotice
     viewer(:initialValue="item.text", v-if="item.text")
 </template>
 
@@ -71,18 +71,34 @@ export default class SiteNotice extends Vue {
   margin-bottom: 1rem;
   text-align: center;
 }
-#sitenotice .mw-parser-output {
+
+.sitenotice .mw-parser-output {
   font-size: 1rem;
   color: rgb(49, 112, 143);
-}
-#sitenotice .mw-parser-output ul {
-  color: rgb(49, 112, 143);
-  list-style-image: none;
-  list-style-type: none;
-  text-align: center;
-  line-height: 1.8rem;
-}
-#sitenotice .mw-parser-output ul li::before {
-  content: none;
+  word-break: keep-all;
+  ol,
+  ul,
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    text-decoration: none;
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      transition: 0.3s;
+    }
+  }
+  ul {
+    color: rgb(49, 112, 143);
+    list-style-image: none;
+    list-style-type: none;
+    text-align: center;
+    line-height: 1.8rem;
+  }
+  ul li::before {
+    content: none;
+  }
 }
 </style>
