@@ -46,4 +46,10 @@ export default class Tools extends Vue {
 .floatTools button {
   padding: 1.5rem;
 }
+
+@media screen and (max-width: 768px) {
+  .floatTools {
+    z-index: 20;
+  }
+}
 </style>
