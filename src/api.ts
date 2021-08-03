@@ -84,7 +84,6 @@ async function getTopics(
       limit,
     },
   });
-  console.log(data);
   return data;
 }
 
