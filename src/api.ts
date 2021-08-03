@@ -68,6 +68,7 @@ interface Topic {
   is_pinned: boolean;
   author_id: null | number;
   author_name: string;
+  comment_count: number;
   created_at: string;
   updated_at: string;
 }
@@ -83,6 +84,7 @@ async function getTopics(
       limit,
     },
   });
+  console.log(data);
   return data;
 }
 

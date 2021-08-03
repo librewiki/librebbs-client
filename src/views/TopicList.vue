@@ -23,9 +23,12 @@
                     :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + topic.author_name)}`"
                   ) 기여
                   | )
-            span.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ updatedAtString(topic) }}
+            .topic-info-area
+              span.topic-updated_at(:to="`/${board.name}/${topic.id}`") {{ updatedAtString(topic) }}
           .card-body
-            .topic-name {{ decodeTitle(topic.title) }}
+            .topic-title-area
+              span.topic-title {{ decodeTitle(topic.title) }}
+              span.topic-comment-count [{{ topic.comment_count }}]
             .topic-icons
               b-tooltip.topic-isupdated(label="마지막 방문 이후에 바뀜" v-if="isUpdated(topic)")
                 b-icon(icon="exclamation")
@@ -35,6 +38,7 @@
                 b-icon(icon="lock")
               b-tooltip.topic-ispinned(label="상단 고정됨" v-if="topic.is_pinned")
                 b-icon(icon="thumbtack")
+
   infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
     div(slot="no-more")
     div(slot="no-results")
@@ -168,6 +172,10 @@ export default class TopicListPage extends Vue {
   color: #4a4a4a;
   display: flex;
   justify-content: space-between;
+}
+.topic-comment-count {
+  margin-left: 0.2rem;
+  color: #777;
 }
 .topic-updated_at {
   font-size: 0.8rem;

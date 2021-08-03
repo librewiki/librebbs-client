@@ -81,6 +81,7 @@ export default class TopicPage extends Vue {
     is_pinned: false,
     author_id: 0,
     author_name: "",
+    comment_count: 0,
     created_at: "",
     updated_at: "",
   };
