@@ -28,7 +28,7 @@
           .card-body
             .topic-title-area
               span.topic-title {{ decodeTitle(topic.title) }}
-              span.topic-comment-count [{{ topic.comment_count }}]
+              span.topic-comment-count(v-if="topic.comment_count > 1") [{{ topic.comment_count }}] 
             .topic-icons
               b-tooltip.topic-isupdated(label="마지막 방문 이후에 바뀜" v-if="isUpdated(topic)")
                 b-icon(icon="exclamation")
