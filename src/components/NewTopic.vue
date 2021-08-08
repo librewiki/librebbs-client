@@ -94,7 +94,7 @@ export default class NewTopic extends Vue {
   }
 
   get editorOpen(): boolean {
-    return store.state.editorOpen;
+    return store.state.editor.open;
   }
 
   modalclose(): void {

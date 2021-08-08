@@ -20,7 +20,10 @@ interface State {
   };
   modalError: Error | null;
   canWrite: boolean;
-  editorOpen: boolean;
+  editor: {
+    open: boolean;
+    initialValue: string;
+  };
 }
 
 const storeOptions: StoreOptions<State> = {
@@ -46,7 +49,10 @@ const storeOptions: StoreOptions<State> = {
     },
     modalError: null,
     canWrite: false,
-    editorOpen: false,
+    editor: {
+      open: false,
+      initialValue: "",
+    },
   },
   mutations: {
     setBoard(state, board: Board) {
@@ -59,7 +65,11 @@ const storeOptions: StoreOptions<State> = {
       state.modalError = error;
     },
     setEditorOpen(state, newState: boolean) {
-      state.editorOpen = newState;
+      state.editor.open = newState;
+      state.editor.initialValue = "";
+    },
+    setEditorInitialValue(state, initialValue: string) {
+      state.editor.initialValue = initialValue;
     },
     setCanWrite(state, newState: boolean) {
       state.canWrite = newState;

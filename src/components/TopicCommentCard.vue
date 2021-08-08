@@ -18,14 +18,17 @@
         | )
     .topic-comment-tools
       .topic-comment-date {{ dateString }}
-      b-dropdown.admin-tools.is-right(v-if="user.isAdmin")
-          button.button.is-small(slot="trigger")
-            b-icon(icon="angle-down")
+      b-dropdown.is-right
+        button.button.is-small(slot="trigger")
+          b-icon(icon="angle-down")
+        b-dropdown-item.comment-tool-button(@click="quote") 인용
+        template(v-if="user.isAdmin")
+          hr.dropdown-divider
           template(v-if="comment.is_hidden")
-            b-dropdown-item.admin-button(@click="unhide") 숨기기 취소
-            b-dropdown-item.admin-button(@click="showHidden") 보기
-          b-dropdown-item.admin-button(@click="hide" v-else) 숨기기
-          b-dropdown-item.admin-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
+            b-dropdown-item.comment-tool-button(@click="unhide") 숨기기 취소
+            b-dropdown-item.comment-tool-button(@click="showHidden") 내용 보기
+          b-dropdown-item.comment-tool-button(@click="hide" v-else) 숨기기
+          b-dropdown-item.comment-tool-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
       
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
     viewer(:initialValue="comment.content" v-if="comment.content")
@@ -73,6 +76,18 @@ export default class TopicContentCard extends Vue {
     const data = await getComment(this.comment.id, true);
     this.$emit("update:comment", data);
   }
+
+  quote(): void {
+    console.log(this.comment.content);
+    const content = this.comment.content
+      ?.replaceAll("<br>", "")
+      .replaceAll("\n", "\n> ");
+    const value = `>${this.dateString}에 ${this.comment.author_name} 님이 작성:
+>${content}
+`;
+    store.commit("setEditorOpen", true);
+    store.commit("setEditorInitialValue", value);
+  }
 }
 </script>
 
@@ -112,10 +127,10 @@ export default class TopicContentCard extends Vue {
   .hidden-comment {
     background-color: $light;
   }
-  .admin-button {
+  .comment-tool-button {
     cursor: pointer;
   }
-  .admin-button:hover {
+  .comment-tool-button:hover {
     color: $navbar-item-hover-color;
     background-color: $primary;
     transition: 0.25s;

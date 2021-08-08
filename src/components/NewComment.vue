@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { postFile, postComment } from "@/api";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/vue-editor";
@@ -93,7 +93,15 @@ export default class NewComment extends Vue {
   }
 
   get editorOpen(): boolean {
-    return store.state.editorOpen;
+    return store.state.editor.open;
+  }
+
+  @Watch("$store.state.editor.initialValue")
+  onInitialValueChange(): void {
+    this.$refs.toastuiEditor.invoke(
+      "setMarkdown",
+      store.state.editor.initialValue
+    );
   }
 
   modalclose(): void {
