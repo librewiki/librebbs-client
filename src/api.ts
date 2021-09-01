@@ -222,6 +222,24 @@ async function unhideComment(commentId: number): Promise<Comment> {
   return data;
 }
 
+async function searchComment(
+  boardId: number,
+  searchType: number,
+  searchQuery: string,
+  offset: number,
+  limit: number
+): Promise<Topic[]> {
+  const { data } = await client.get<Topic[]>(`/boards/${boardId}/search/`, {
+    params: {
+      query: searchQuery,
+      type: searchType,
+      offset: offset,
+      limit: limit,
+    },
+  });
+  return data;
+}
+
 interface FileResponse {
   path: string;
 }
@@ -247,6 +265,7 @@ export {
   postTopic,
   postComment,
   postFile,
+  searchComment,
   hideComment,
   unhideComment,
   hideTopic,

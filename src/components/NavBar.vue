@@ -77,7 +77,7 @@ nav.liberty-navbar.navbar
         .search-box-wrapper
           b-field
             b-autocomplete(
-              placeholder="검색",
+              placeholder="위키 검색",
               icon="search",
               v-model="searchInput",
               :data="autoCompleteItem",

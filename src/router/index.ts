@@ -26,6 +26,12 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "topic" */ "../views/Topic.vue"),
   },
+  {
+    path: "/:boardName/search/:query",
+    name: "Search",
+    component: () =>
+      import(/* webpackChunkName: "search" */ "../views/Search.vue"),
+  },
 ];
 
 const router = new VueRouter({
