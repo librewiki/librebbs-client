@@ -1,6 +1,11 @@
 <template lang="pug">
 footer.liberty-footer.main-footer
+  a(href="https://librewiki.net")
     img.designedbylibre(src="../assets/designedbylibre.png")
+  .librebbs 
+    a(
+      href="https://librewiki.net/wiki/%EB%A6%AC%EB%B8%8C%EB%A0%88_%EC%9C%84%ED%82%A4:LibreBBS"
+    ) Powered by LibreBBS
 </template>
 
 <script lang="ts">
@@ -26,5 +31,9 @@ export default class FooterContent extends Vue {}
 .designedbylibre {
   width: 100px;
   height: auto;
+}
+
+.librebbs {
+  float: right;
 }
 </style>
