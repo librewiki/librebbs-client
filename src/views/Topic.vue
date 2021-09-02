@@ -30,6 +30,7 @@
   p(v-else-if="topic.is_suspended") 이 주제는 잠겨있어 의견을 추가할 수 없습니다.
   p(v-else-if="user.isBlocked") 차단되어 있어 의견을 추가할 수 없습니다.
   new-comment(:topic-id="topic.id", :refresh="refresh", v-else)
+  
 </template>
 
 <script lang="ts">
@@ -112,7 +113,7 @@ export default class TopicPage extends Vue {
   }
 
   async handleInfinite($state: StateChanger): Promise<void> {
-    const limit = 10;
+    const limit = 20;
     const topicId = parseInt(this.$route.params.topicId);
     const comments = await getComments(topicId, this.comments.length, limit);
     if (comments.length) {
