@@ -11,6 +11,8 @@ module.exports = {
       appleTouchIcon: null,
       maskIcon: null,
       msTileImage: null,
-    }
+    },
+    themeColor: "#4188f1",
+    msTileColor: "#4188f1"
   }
 }
