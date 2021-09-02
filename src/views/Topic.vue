@@ -120,6 +120,7 @@ export default class TopicPage extends Vue {
     }
     if (comments.length < limit) {
       $state.complete();
+      setTimeout($state.reset, 10000);
     } else {
       $state.loaded();
     }
