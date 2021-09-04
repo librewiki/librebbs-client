@@ -2,17 +2,19 @@
 .card.topic-comment-card
   header.card-header
     .topic-comment-info
-      a(:href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.author_name )}`")
+      a(
+        :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.author_name)}`"
+      )
         .topic-comment-author {{ comment.author_name }}
       span.comment-author-link
         | (
         a(
-          @click.stop
+          @click.stop,
           :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name)}`"
         ) 토론
         | |
         a(
-          @click.stop
+          @click.stop,
           :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + comment.author_name)}`"
         ) 기여
         | )
@@ -27,11 +29,13 @@
           template(v-if="comment.is_hidden")
             b-dropdown-item.comment-tool-button(@click="unhide") 숨기기 취소
             b-dropdown-item.comment-tool-button(@click="showHidden") 내용 보기
-          b-dropdown-item.comment-tool-button(@click="hide" v-else) 숨기기
-          b-dropdown-item.comment-tool-button(:href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name )}`") 사용자 차단
-      
+          b-dropdown-item.comment-tool-button(@click="hide", v-else) 숨기기
+          b-dropdown-item.comment-tool-button(
+            :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name)}`"
+          ) 사용자 차단
+
   .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
-    viewer(:initialValue="comment.content" v-if="comment.content")
+    viewer(:initialValue="comment.content", v-if="comment.content")
     p(v-else) 이 의견은 관리자에 의해 숨겨졌습니다.
 </template>
 
@@ -117,6 +121,12 @@ export default class TopicContentCard extends Vue {
   }
   .topic-comment-date {
     margin-right: 1rem;
+    word-break: keep-all;
+  }
+  @media screen and (max-width: 768px) {
+    .topic-comment-date {
+      margin-right: 0.2rem;
+    }
   }
   .topic-comment-admin {
     margin-left: 1rem;

@@ -14,9 +14,6 @@
                   router-link(:to="`/${board.name}`")
                     h1.title {{ title }}
               tools
-              //- .level-right(v-if="meta.toolBox")
-              //-   .level-item
-              //-     tool-box
           section.main-content
             error-page(v-if="error")
             router-view(v-else)
@@ -139,30 +136,10 @@ a.external {
     border-top-right-radius: $radius-large;
     border: 1px solid #e1e8ed;
     background-color: $background;
-    .title-wrapper-row {
-      .level-left > .level-item {
-        flex-shrink: 1;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      @include mobile {
-        display: flex;
-        flex-direction: column-reverse;
-        align-items: stretch;
-        .level-left {
-          display: flex;
-          align-items: flex-start;
-        }
-        .level-right {
-          margin-top: 0;
-          padding-bottom: 0.5rem;
-          margin-bottom: 0.5rem;
-          display: flex;
-          justify-content: flex-end;
-          border-bottom: 1px solid #e1e8ed;
-        }
-      }
-    }
+  }
+
+  .title-wrapper-row {
+    display: flex;
   }
   .main-content {
     word-wrap: break-word;

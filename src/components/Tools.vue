@@ -1,10 +1,9 @@
 <template lang="pug">
-nav.liberty-Tools
-  .topBtn
-    .level-item
-      button.button(v-if="canWrite", @click="openWriteModal") 
-        b-icon(icon="edit")
-        span 글쓰기
+nav.liberty-Tools.level-right
+  .topBtn.level-item
+    button.button(v-if="canWrite", @click="openWriteModal") 
+      b-icon(icon="edit")
+      span 글쓰기
   nav#liberty-scollTools(:class="{ withWriteTools: isactive }")
     button#btnBottomWrite.scroll-button(
       v-if="canWrite && isactive",
@@ -64,6 +63,13 @@ export default class Tools extends Vue {
 
 <style lang="scss">
 @import "@/assets/style-variables.scss";
+
+.title-wrapper-row .level-right {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border: 0;
+  margin-top: 0;
+}
 
 @media screen and (max-width: 768px) {
   #liberty-scollTools {
