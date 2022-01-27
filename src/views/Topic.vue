@@ -14,15 +14,19 @@
       b-dropdown-item.admin-button(@click="suspend", v-else) 잠그기
       b-dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
       b-dropdown-item.admin-button(@click="close", v-else) 종료
-      b-dropdown-item.admin-button(@click="unpin" v-if="topic.is_pinned") 상단 고정 해제
-      b-dropdown-item.admin-button(@click="pin" v-else) 상단 고정
+      b-dropdown-item.admin-button(@click="unpin", v-if="topic.is_pinned") 상단 고정 해제
+      b-dropdown-item.admin-button(@click="pin", v-else) 상단 고정
 
   topic-comment-card.topic-content-card(
     v-for="(comment, index) in comments",
     :key="comment.id",
     :comment.sync="comments[index]"
   )
-  infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
+  infinite-loading(
+    @infinite="handleInfinite",
+    spinner="waveDots",
+    :identifier="infiniteId"
+  )
     div(slot="no-more")
     div(slot="no-results")
   hr
@@ -30,7 +34,6 @@
   p(v-else-if="topic.is_suspended") 이 주제는 잠겨있어 의견을 추가할 수 없습니다.
   p(v-else-if="user.isBlocked") 차단되어 있어 의견을 추가할 수 없습니다.
   new-comment(:topic-id="topic.id", :refresh="refresh", v-else)
-  
 </template>
 
 <script lang="ts">

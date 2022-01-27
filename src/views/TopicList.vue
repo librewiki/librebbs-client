@@ -8,18 +8,18 @@
             .topic-author-area
               span.topic-author
                 a(
-                  @click.stop
+                  @click.stop,
                   :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
                 ) {{ topic.author_name }}
                 span.topic-author-link
                   | (
                   a(
-                    @click.stop
+                    @click.stop,
                     :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
                   ) 토론
                   | |
                   a(
-                    @click.stop
+                    @click.stop,
                     :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + topic.author_name)}`"
                   ) 기여
                   | )
@@ -28,18 +28,28 @@
           .card-body
             .topic-title-area
               span.topic-title {{ decodeTitle(topic.title) }}
-              span.topic-comment-count(v-if="topic.comment_count > 1") [{{ topic.comment_count }}] 
+              span.topic-comment-count(v-if="topic.comment_count > 1") [{{ topic.comment_count }}]
             .topic-icons
-              b-tooltip.topic-isupdated(label="마지막 방문 이후에 바뀜" v-if="isUpdated(topic)")
+              b-tooltip.topic-isupdated(
+                label="마지막 방문 이후에 바뀜",
+                v-if="isUpdated(topic)"
+              )
                 b-icon(icon="exclamation")
-              b-tooltip.topic-islocked(label="종료됨" v-if="topic.is_closed")
+              b-tooltip.topic-islocked(label="종료됨", v-if="topic.is_closed")
                 b-icon(icon="lock")
-              b-tooltip.topic-islocked(label="중단됨" v-else-if="topic.is_suspended")
+              b-tooltip.topic-islocked(
+                label="중단됨",
+                v-else-if="topic.is_suspended"
+              )
                 b-icon(icon="lock")
-              b-tooltip.topic-ispinned(label="상단 고정됨" v-if="topic.is_pinned")
+              b-tooltip.topic-ispinned(label="상단 고정됨", v-if="topic.is_pinned")
                 b-icon(icon="thumbtack")
 
-  infinite-loading(@infinite="handleInfinite", :identifier="infiniteId")
+  infinite-loading(
+    @infinite="handleInfinite",
+    spinner="waveDots",
+    :identifier="infiniteId"
+  )
     div(slot="no-more")
     div(slot="no-results")
   hr
@@ -54,7 +64,6 @@ import { getTopics } from "@/api";
 import type { Topic, Board } from "@/api";
 import NewTopic from "@/components/NewTopic.vue";
 import store from "@/store";
-import md5 from "md5";
 import { decode } from "html-entities";
 import type { MetaInfo } from "vue-meta";
 import { DateTime } from "luxon";
@@ -121,11 +130,6 @@ export default class TopicListPage extends Vue {
     } else {
       return null;
     }
-  }
-
-  genGravataHash(topic: Topic): string {
-    const key = topic.id + topic.author_name;
-    return md5(key);
   }
 
   mounted(): void {

@@ -37,7 +37,7 @@ export default class Tools extends Vue {
 
   scrollButton(): void {
     let nowscroll = window.scrollY;
-    if (nowscroll > 300) {
+    if (nowscroll > 300 && store.state.canWrite == true) {
       this.isactive = true;
     } else {
       this.isactive = false;
