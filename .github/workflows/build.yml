@@ -12,17 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: npm ci --no-audit
+      - run: yarn
 
       - run: |
           echo "$(env | grep VUE_APP_CLIENT_ID)" > .env.local
           echo "$(env | grep VUE_APP_BACKEND_HOST)" >> .env.local
-        env: 
+        env:
           VUE_APP_CLIENT_ID: ${{ secrets.VUE_APP_CLIENT_ID }}
           VUE_APP_BACKEND_HOST: ${{ secrets.VUE_APP_BACKEND_HOST }}
 
       - run: |
-          npm run build
+          yarn build
           cp dist/index.html dist/404.html
 
       - uses: JamesIves/github-pages-deploy-action@4.1.0
