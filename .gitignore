@@ -22,7 +22,5 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-package-lock.json
-yarn.lock
 .yarn/*
 !.yarn/releases
