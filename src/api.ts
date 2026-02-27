@@ -32,7 +32,7 @@ client.interceptors.response.use(
 interface UserInfo {
   id: number;
   blocked: boolean;
-  confirmed_email: boolean;
+  confirmedEmail: boolean;
   email: string;
   groups: string[];
   rights: string[];
@@ -46,11 +46,11 @@ async function getUserInfo(): Promise<UserInfo> {
 
 interface Board {
   id: number;
-  display_name: string;
+  displayName: string;
   name: string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 async function getBoards(): Promise<Board[]> {
@@ -60,17 +60,17 @@ async function getBoards(): Promise<Board[]> {
 
 interface Topic {
   id: number;
-  board_id: number;
+  boardId: number;
   title: string;
-  is_closed: boolean;
-  is_suspended: boolean;
-  is_hidden: boolean;
-  is_pinned: boolean;
-  author_id: null | number;
-  author_name: string;
-  comment_count: number;
-  created_at: string;
-  updated_at: string;
+  isClosed: boolean;
+  isSuspended: boolean;
+  isHidden: boolean;
+  isPinned: boolean;
+  authorId: null | number;
+  authorName: string;
+  commentCount: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 async function getTopics(
@@ -98,7 +98,7 @@ async function postTopic(
   content: string
 ): Promise<Topic> {
   const { data } = await client.post<Topic>("/topics", {
-    board_id: boardId,
+    boardId: boardId,
     title,
     content,
   });
@@ -107,69 +107,69 @@ async function postTopic(
 
 async function hideTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_hidden: true,
+    isHidden: true,
   });
   return data;
 }
 
 async function unhideTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_hidden: false,
+    isHidden: false,
   });
   return data;
 }
 
 async function suspendTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_suspended: true,
+    isSuspended: true,
   });
   return data;
 }
 
 async function unsuspendTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_suspended: false,
+    isSuspended: false,
   });
   return data;
 }
 
 async function closeTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_closed: true,
+    isClosed: true,
   });
   return data;
 }
 
 async function uncloseTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_closed: false,
+    isClosed: false,
   });
   return data;
 }
 
 async function pinTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_pinned: true,
+    isPinned: true,
   });
   return data;
 }
 
 async function unpinTopic(topicId: number): Promise<Topic> {
   const { data } = await client.put<Topic>(`/topics/${topicId}/status`, {
-    is_pinned: false,
+    isPinned: false,
   });
   return data;
 }
 
 interface Comment {
   id: number;
-  topic_id: number;
+  topicId: number;
   content: null | string;
-  author_id: null | number;
-  author_name: string;
-  is_hidden: boolean;
-  created_at: string;
-  updated_at: string;
+  authorId: null | number;
+  authorName: string;
+  isHidden: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 async function getComments(
@@ -192,7 +192,7 @@ async function getComment(
 ): Promise<Comment> {
   const { data } = await client.get<Comment>(`/comments/${commentId}`, {
     params: {
-      show_hidden: showHidden,
+      showHidden: showHidden,
     },
   });
   return data;
@@ -210,14 +210,14 @@ async function postComment(
 
 async function hideComment(commentId: number): Promise<Comment> {
   const { data } = await client.put<Comment>(`/comments/${commentId}/status`, {
-    is_hidden: true,
+    isHidden: true,
   });
   return data;
 }
 
 async function unhideComment(commentId: number): Promise<Comment> {
   const { data } = await client.put<Comment>(`/comments/${commentId}/status`, {
-    is_hidden: false,
+    isHidden: false,
   });
   return data;
 }
