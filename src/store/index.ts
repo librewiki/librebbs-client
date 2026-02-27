@@ -33,11 +33,11 @@ const storeOptions: StoreOptions<State> = {
     },
     board: {
       id: 0,
-      display_name: "",
+      displayName: "",
       name: "",
-      is_active: false,
-      created_at: "",
-      updated_at: "",
+      isActive: false,
+      createdAt: "",
+      updatedAt: "",
     },
     user: {
       isInitialized: false,
