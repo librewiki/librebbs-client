@@ -48,7 +48,7 @@ import Tools from "@/components/Tools.vue";
 })
 export default class App extends Vue {
   get title(): string {
-    return store.state.board.display_name;
+    return store.state.board.displayName;
   }
   get error(): Error | null {
     return store.state.meta.error;
