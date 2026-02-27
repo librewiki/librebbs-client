@@ -3,19 +3,19 @@
   header.card-header
     .topic-comment-info
       a(
-        :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.author_name)}`"
+        :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + comment.authorName)}`"
       )
-        .topic-comment-author {{ comment.author_name }}
+        .topic-comment-author {{ comment.authorName }}
       span.comment-author-link
         | (
         a(
           @click.stop,
-          :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.author_name)}`"
+          :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + comment.authorName)}`"
         ) 토론
         | |
         a(
           @click.stop,
-          :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + comment.author_name)}`"
+          :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + comment.authorName)}`"
         ) 기여
         | )
     .topic-comment-tools
@@ -26,15 +26,15 @@
         b-dropdown-item.comment-tool-button(@click="quote") 인용
         template(v-if="user.isAdmin")
           hr.dropdown-divider
-          template(v-if="comment.is_hidden")
+          template(v-if="comment.isHidden")
             b-dropdown-item.comment-tool-button(@click="unhide") 숨기기 취소
             b-dropdown-item.comment-tool-button(@click="showHidden") 내용 보기
           b-dropdown-item.comment-tool-button(@click="hide", v-else) 숨기기
           b-dropdown-item.comment-tool-button(
-            :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.author_name)}`"
+            :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:차단/' + comment.authorName)}`"
           ) 사용자 차단
 
-  .card-comment(:class="{ 'hidden-comment': comment.is_hidden }")
+  .card-comment(:class="{ 'hidden-comment': comment.isHidden }")
     viewer(:initialValue="comment.content", v-if="comment.content")
     p(v-else) 이 의견은 관리자에 의해 숨겨졌습니다.
 </template>
@@ -61,7 +61,7 @@ export default class TopicContentCard extends Vue {
   }
 
   get dateString(): string {
-    return DateTime.fromISO(this.comment.created_at).toLocaleString(
+    return DateTime.fromISO(this.comment.createdAt).toLocaleString(
       DateTime.DATETIME_MED
     );
   }
@@ -86,7 +86,7 @@ export default class TopicContentCard extends Vue {
     const content = this.comment.content
       ?.replaceAll("<br>", "")
       .replaceAll("\n", "\n> ");
-    const value = `>${this.dateString}에 ${this.comment.author_name} 님이 작성:
+    const value = `>${this.dateString}에 ${this.comment.authorName} 님이 작성:
 >${content}
 `;
     store.commit("setEditorOpen", true);
