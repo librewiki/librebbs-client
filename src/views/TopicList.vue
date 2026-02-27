@@ -9,18 +9,18 @@
               span.topic-author
                 a(
                   @click.stop,
-                  :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.author_name)}`"
-                ) {{ topic.author_name }}
+                  :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자:' + topic.authorName)}`"
+                ) {{ topic.authorName }}
                 span.topic-author-link
                   | (
                   a(
                     @click.stop,
-                    :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.author_name)}`"
+                    :href="`https://librewiki.net/wiki/${encodeURIComponent('사용자토론:' + topic.authorName)}`"
                   ) 토론
                   | |
                   a(
                     @click.stop,
-                    :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + topic.author_name)}`"
+                    :href="`https://librewiki.net/wiki/${encodeURIComponent('특수:기여/' + topic.authorName)}`"
                   ) 기여
                   | )
             .topic-info-area
@@ -28,21 +28,21 @@
           .card-body
             .topic-title-area
               span.topic-title {{ decodeTitle(topic.title) }}
-              span.topic-comment-count(v-if="topic.comment_count > 1") [{{ topic.comment_count }}]
+              span.topic-comment-count(v-if="topic.commentCount > 1") [{{ topic.commentCount }}]
             .topic-icons
               b-tooltip.topic-isupdated(
                 label="마지막 방문 이후에 바뀜",
                 v-if="isUpdated(topic)"
               )
                 b-icon(icon="exclamation")
-              b-tooltip.topic-islocked(label="종료됨", v-if="topic.is_closed")
+              b-tooltip.topic-islocked(label="종료됨", v-if="topic.isClosed")
                 b-icon(icon="lock")
               b-tooltip.topic-islocked(
                 label="중단됨",
-                v-else-if="topic.is_suspended"
+                v-else-if="topic.isSuspended"
               )
                 b-icon(icon="lock")
-              b-tooltip.topic-ispinned(label="상단 고정됨", v-if="topic.is_pinned")
+              b-tooltip.topic-ispinned(label="상단 고정됨", v-if="topic.isPinned")
                 b-icon(icon="thumbtack")
 
   infinite-loading(
@@ -76,7 +76,7 @@ import { DateTime } from "luxon";
   },
   metaInfo(): MetaInfo {
     return {
-      title: (this as TopicListPage).board.display_name,
+      title: (this as TopicListPage).board.displayName,
     };
   },
 })
@@ -114,12 +114,12 @@ export default class TopicListPage extends Vue {
   }
 
   updatedAtString(topic: Topic): string {
-    return `${DateTime.fromISO(topic.updated_at).toRelative()}에 업데이트됨`;
+    return `${DateTime.fromISO(topic.updatedAt).toRelative()}에 업데이트됨`;
   }
 
   isUpdated(topic: Topic): boolean {
     const lastVisited = this.lastVisited(topic.id);
-    return !!lastVisited && DateTime.fromISO(topic.updated_at) > lastVisited;
+    return !!lastVisited && DateTime.fromISO(topic.updatedAt) > lastVisited;
   }
 
   lastVisited(id: number): DateTime | null {
@@ -134,7 +134,7 @@ export default class TopicListPage extends Vue {
 
   mounted(): void {
     if (
-      store.state.board.is_active == true &&
+      store.state.board.isActive == true &&
       store.state.user.isBlocked == false
     ) {
       store.commit("setCanWrite", true);
@@ -143,9 +143,9 @@ export default class TopicListPage extends Vue {
 
   checkCanWrite(tp: Topic): boolean {
     if (
-      tp.is_closed == true ||
-      tp.is_suspended == true ||
-      tp.is_hidden == true ||
+      tp.isClosed == true ||
+      tp.isSuspended == true ||
+      tp.isHidden == true ||
       store.state.user.isBlocked == true
     ) {
       return false;

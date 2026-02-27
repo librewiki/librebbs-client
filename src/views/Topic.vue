@@ -5,16 +5,16 @@
       h3.title.topic-title {{ decodeTitle(topic.title) }}
     b-dropdown.admin-tools.is-right(v-if="user.isAdmin")
       button.button.is-small(slot="trigger") 관리자 메뉴
-      b-dropdown-item.admin-button(@click="unhide", v-if="topic.is_hidden") 숨김 해제
+      b-dropdown-item.admin-button(@click="unhide", v-if="topic.isHidden") 숨김 해제
       b-dropdown-item.admin-button(@click="hide", v-else) 숨기기
       b-dropdown-item.admin-button(
         @click="unsuspend",
-        v-if="topic.is_suspended"
+        v-if="topic.isSuspended"
       ) 잠금 해제
       b-dropdown-item.admin-button(@click="suspend", v-else) 잠그기
-      b-dropdown-item.admin-button(@click="unclose", v-if="topic.is_closed") 종료 취소
+      b-dropdown-item.admin-button(@click="unclose", v-if="topic.isClosed") 종료 취소
       b-dropdown-item.admin-button(@click="close", v-else) 종료
-      b-dropdown-item.admin-button(@click="unpin", v-if="topic.is_pinned") 상단 고정 해제
+      b-dropdown-item.admin-button(@click="unpin", v-if="topic.isPinned") 상단 고정 해제
       b-dropdown-item.admin-button(@click="pin", v-else) 상단 고정
 
   topic-comment-card.topic-content-card(
@@ -30,8 +30,8 @@
     div(slot="no-more")
     div(slot="no-results")
   hr
-  p(v-if="topic.is_closed") 이 주제는 종료되어 의견을 추가할 수 없습니다.
-  p(v-else-if="topic.is_suspended") 이 주제는 잠겨있어 의견을 추가할 수 없습니다.
+  p(v-if="topic.isClosed") 이 주제는 종료되어 의견을 추가할 수 없습니다.
+  p(v-else-if="topic.isSuspended") 이 주제는 잠겨있어 의견을 추가할 수 없습니다.
   p(v-else-if="user.isBlocked") 차단되어 있어 의견을 추가할 수 없습니다.
   new-comment(:topic-id="topic.id", :refresh="refresh", v-else)
 </template>
@@ -65,7 +65,7 @@ import type { MetaInfo } from "vue-meta";
     InfiniteLoading,
   },
   metaInfo(): MetaInfo {
-    const boardName = (this as TopicPage).board.display_name;
+    const boardName = (this as TopicPage).board.displayName;
     const topicTitle = (this as TopicPage).decodeTitle(
       (this as TopicPage).topic.title
     );
@@ -77,17 +77,17 @@ import type { MetaInfo } from "vue-meta";
 export default class TopicPage extends Vue {
   topic: Topic = {
     id: 0,
-    board_id: 0,
+    boardId: 0,
     title: "",
-    is_closed: false,
-    is_suspended: false,
-    is_hidden: false,
-    is_pinned: false,
-    author_id: 0,
-    author_name: "",
-    comment_count: 0,
-    created_at: "",
-    updated_at: "",
+    isClosed: false,
+    isSuspended: false,
+    isHidden: false,
+    isPinned: false,
+    authorId: 0,
+    authorName: "",
+    commentCount: 0,
+    createdAt: "",
+    updatedAt: "",
   };
   comments: Comment[] = [];
   busy = false;
@@ -151,9 +151,9 @@ export default class TopicPage extends Vue {
 
   checkCanWrite(tp: Topic): void {
     if (
-      tp.is_closed == true ||
-      tp.is_suspended == true ||
-      tp.is_hidden == true ||
+      tp.isClosed == true ||
+      tp.isSuspended == true ||
+      tp.isHidden == true ||
       store.state.user.isBlocked == true
     ) {
       store.commit("setCanWrite", false);
